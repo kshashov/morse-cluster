@@ -1,6 +1,7 @@
 package com.cluster.math.utils;
 
 import com.cluster.math.MinsRepository;
+import com.cluster.math.Strongin;
 import com.cluster.math.model.Bits;
 
 /**
@@ -20,12 +21,15 @@ public class Efficiency {
     }
 
     private void updateData() {
-        //TODO inf sup z
-    }
-
-    public void setX(long x) {
-        this.x = x;
-        updateData();
+        int N = Strongin.getN();
+        int M = Strongin.getM();
+        //TODO inf sup
+        //TODO z
+        //1. generate startConf with K atoms
+        //2. call growAlg api
+        //3. get Conformation
+        //4. try add Conformation to repository
+        //4. calc z
     }
 
     public long getX() {

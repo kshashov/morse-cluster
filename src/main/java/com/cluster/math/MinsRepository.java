@@ -18,7 +18,7 @@ public class MinsRepository {
         this.size = size;
     }
 
-    public boolean  tryAddStructure(Structure structure) {
+    public boolean tryAddStructure(Conformation structure) {
         //TODO
         return false;
     }

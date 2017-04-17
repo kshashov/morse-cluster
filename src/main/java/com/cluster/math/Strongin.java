@@ -1,8 +1,8 @@
 package com.cluster.math;
 
-import com.cluster.math.utils.Efficiency;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Interval;
+import com.cluster.math.utils.Efficiency;
 
 import java.util.ArrayList;
 
@@ -12,12 +12,15 @@ import java.util.ArrayList;
 public class Strongin {
     private static final int m = 150;
     private static final double eps = 20000;
+    private static int N = 0;
+    private static int M = 0;
+    private static int K = 0;
 
     public static double calcF(long a, long b, double zA, double zB) {
         return m * (b - a) + (Math.pow(zB - zA, 2) / (m * (b - a))) - 2 * (zA + zB);
     }
 
-    public MinsRepository solve(Bits a, Bits b, final int iterations, final int N, final int M, int sizeMins) {
+    public MinsRepository solve(Bits a, Bits b, final int iterations, int sizeMins) {
         MinsRepository rep = new MinsRepository(sizeMins);
         ArrayList<Interval> intervals = new ArrayList<>();
         intervals.add(new Interval(rep, a, b));
@@ -72,4 +75,15 @@ public class Strongin {
         return rep;
     }
 
+    public static int getN() {
+        return N;
+    }
+
+    public static int getM() {
+        return M;
+    }
+
+    public static int getK() {
+        return K;
+    }
 }

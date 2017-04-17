@@ -1,6 +1,7 @@
 package com.cluster.math.utils;
 
 import com.cluster.math.model.Bits;
+import com.cluster.math.model.Conformation;
 
 import java.util.ArrayList;
 
@@ -10,15 +11,15 @@ import java.util.ArrayList;
 public class ClusterMath {
     private static Bits startConf;
     private static ArrayList<Integer> indexes;
-    private static ArrayList<Object> blablaVertexes;
+    private static ArrayList<Object> blablaVertices;
 
-    public static void init(Bits startConf,  ArrayList<Object> blablaVertexes, ArrayList<Integer> indexes) {
+    public static void init(Bits startConf, ArrayList<Object> blablaVertices, ArrayList<Integer> indexes) {
         ClusterMath.startConf = startConf;
-        ClusterMath.blablaVertexes = blablaVertexes;
+        ClusterMath.blablaVertices = blablaVertices;
         ClusterMath.indexes = indexes;
     }
 
-    public static double calcWithStartConf(Bits bits) {
+    public static Conformation calcWithStartConf(Bits bits, boolean isLocalOpt) {
         if (indexes.size() != bits.getSize()) {
             throw new IllegalArgumentException("Invalid bits size");
         }
@@ -27,16 +28,18 @@ public class ClusterMath {
         for (int i = 0; i < bits.getSize(); i++) {
             sb.setCharAt(indexes.get(i), bits.get(i));
         }
-        Bits conf = new Bits(startConf.getSize(), sb);
-
-        return calcE(conf);
+        return calcE(new Bits(startConf.getSize(), sb), isLocalOpt);
     }
 
-    public static double calcE(Bits bits) {
-        if (bits.getSize() != blablaVertexes.size()) {
+    public static Conformation calcE(Bits bits, boolean isLocalOpt) {
+        if (bits.getSize() != blablaVertices.size()) {
             throw new IllegalArgumentException("Invalid bits size");
         }
-        //TODO conf + blablaVertexes = energy
-        return 0.0;
+        //TODO bits + blablaVertexes = energy
+        double energy = 0.0;
+        ArrayList<Object> vertices = isLocalOpt ? blablaVertices : null;
+
+        return new Conformation(bits, vertices, energy);
     }
+
 }
