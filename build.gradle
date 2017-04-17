@@ -1,0 +1,86 @@
+group 'shashov.com'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+    }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+    }
+}
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "http://clojars.org/repo"
+    }
+    /*maven {
+        url "http://maven.jzy3d.org/snapshots"
+    }
+    maven {
+        url "http://maven.jzy3d.org/releases"
+    }*/
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+apply plugin: 'javafx-gradle-plugin'
+
+
+jfx {
+    // minimal requirement for jfxJar-task
+    mainClass = 'full.qualified.nameOf.TheMainClass'
+
+    // minimal requirement for jfxNative-task
+    vendor = 'YourName'
+}
+
+dependencies {
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'kephale:matlabcontrol:4.1.0'
+
+    compile "org.jogamp.gluegen:gluegen-rt:2.3.1"
+    compile "org.jogamp.jogl:jogl-all:2.3.1"
+
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-android-aarch64"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-android-armv6"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-amd64"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-armv6"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-armv6hf"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-linux-i586"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-macosx-universal"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-solaris-amd64"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-solaris-i586"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-windows-amd64"
+    runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-windows-i586"
+
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-android-aarch64"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-android-armv6"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-linux-amd64"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-linux-armv6"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-linux-armv6hf"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-linux-i586"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-macosx-universal"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-solaris-amd64"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-solaris-i586"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-windows-amd64"
+    runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-windows-i586"
+
+    compile group: 'log4j', name: 'log4j', version: '1.2.16'
+
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.12'
+    //compile 'com.jfoenix:jfoenix:1.2.0'
+}

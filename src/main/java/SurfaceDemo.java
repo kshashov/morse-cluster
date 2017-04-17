@@ -1,0 +1,51 @@
+/**
+ * Created by envoy on 07.03.2017.
+ */
+import org.jzy3d.analysis.AbstractAnalysis;
+import org.jzy3d.analysis.AnalysisLauncher;
+import org.jzy3d.chart.factories.AWTChartComponentFactory;
+import org.jzy3d.colors.Color;
+import org.jzy3d.colors.ColorMapper;
+import org.jzy3d.colors.colormaps.ColorMapRainbow;
+import org.jzy3d.maths.Coord3d;
+import org.jzy3d.maths.Range;
+import org.jzy3d.plot3d.builder.Builder;
+import org.jzy3d.plot3d.builder.Mapper;
+import org.jzy3d.plot3d.builder.concrete.OrthonormalGrid;
+import org.jzy3d.plot3d.primitives.Shape;
+import org.jzy3d.plot3d.primitives.Sphere;
+import org.jzy3d.plot3d.rendering.canvas.Quality;
+
+public class SurfaceDemo extends AbstractAnalysis {
+    public static void main(String[] args) throws Exception {
+        AnalysisLauncher.open(new SurfaceDemo());
+    }
+
+
+    public void init() {
+        // Define a function to plot
+        /*Mapper mapper = new Mapper() {
+            @Override
+            public double f(double x, double y) {
+                return x * Math.sin(x * y);
+            }
+        };
+
+        // Define range and precision for the function to plot
+        Range range = new Range(-3, 3);
+        int steps = 80;
+
+        // Create the object to represent the function over the given range.
+        final Shape surface = Builder.buildOrthonormal(new OrthonormalGrid(range, steps, range, steps), mapper);
+        surface.setColorMapper(new ColorMapper(new ColorMapRainbow(), surface.getBounds().getZmin(), surface.getBounds().getZmax(), new Color(1, 1, 1, .5f)));
+        surface.setFaceDisplayed(true);
+        surface.setWireframeDisplayed(false);*/
+
+        Sphere sphere = new Sphere(new Coord3d(0,0,0),30, 15, new Color(0,0,0));
+
+        // Create a chart
+        chart = AWTChartComponentFactory.chart(Quality.Advanced, getCanvasType());
+        //chart.getScene().getGraph().add(surface);
+        chart.getScene().getGraph().add(sphere);
+    }
+}
