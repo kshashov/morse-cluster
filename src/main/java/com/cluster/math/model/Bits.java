@@ -57,25 +57,16 @@ public class Bits {
     }
 
     private void setBites(StringBuilder bites, boolean isUpdateNumber) {
-        this.sb = sb.delete(size - 1, sb.length() - 1);
-        if (sb.length() < size) {
-            for (int i = 0; i < size - sb.length(); i++) {
-                sb.append('0');
-            }
+        if (bites.length() != size) {
+            throw new IllegalArgumentException("Illegal bits argument");
         }
+
+        sb = new StringBuilder(bites);
 
         if (isUpdateNumber) {
             updateNumber();
         }
     }
-
-    /*private void set(int index, int value) {
-        if (index >= sb.length()) {
-            throw new IllegalArgumentException("invalid index");
-        }
-        sb.setCharAt(index, value == 0 ? '0' : '1');
-        updateNumber();
-    }*/
 
     public StringBuilder getBites() {
         return new StringBuilder(sb);
