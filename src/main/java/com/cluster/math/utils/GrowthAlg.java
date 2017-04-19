@@ -27,7 +27,6 @@ public class GrowthAlg {
     }
 
     private static void buildConfRecursive(final String bits, final int n, int iterations, final Map<String, Conformation> results) {
-        //TODO add some logic
         if (results.containsKey(bits)) {
             return;
         }
@@ -38,7 +37,7 @@ public class GrowthAlg {
         }
 
         if (currSize == n) {
-            results.put(bits, ClusterMath.calcWithStartConf(new Bits(bits.length(), bits), true));
+            results.put(bits, ClusterMath.calcWithStartConf(bits, true));
             return;
         }
 
@@ -80,7 +79,7 @@ public class GrowthAlg {
         Conformation conf = null;
         double minEnergy = 0;
         for (String bits : adjacentList) {
-            conf = ClusterMath.calcWithStartConf(new Bits(bits.length(), bits), false);
+            conf = ClusterMath.calcWithStartConf(bits, false);
             if (conf.getEnergy() < minEnergy) {
                 minEnergy = conf.getEnergy();
             }

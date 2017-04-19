@@ -1,8 +1,8 @@
 package com.cluster;
 
 import com.cluster.gui.TableUtils;
+import com.cluster.math.model.Vertex;
 import com.cluster.model.Decision;
-import com.cluster.model.Vertex;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.value.ChangeListener;
@@ -10,19 +10,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.web.WebView;
 import org.controlsfx.control.NotificationPane;
-import org.controlsfx.control.action.Action;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Consumer;
 
 /**
  * Created by envoy on 09.03.2017.

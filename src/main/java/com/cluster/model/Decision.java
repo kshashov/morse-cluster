@@ -1,6 +1,8 @@
 package com.cluster.model;
 
 
+import com.cluster.math.model.Vertex;
+
 import java.util.List;
 
 /**

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class Conformation {
     private Bits bits;
     private double energy;
-    private ArrayList<Object> vertices;
+    private ArrayList<Vertex> vertices;
 
-    public Conformation(Bits bits, ArrayList<Object> vertices, double energy) {
+    public Conformation(Bits bits, ArrayList<Vertex> vertices, double energy) {
         this.bits = bits;
         this.vertices = vertices;
         this.energy = energy;
@@ -24,7 +24,7 @@ public class Conformation {
         return energy;
     }
 
-    public ArrayList<Object> getVertices() {
+    public ArrayList<Vertex> getVertices() {
         return vertices;
     }
 }
