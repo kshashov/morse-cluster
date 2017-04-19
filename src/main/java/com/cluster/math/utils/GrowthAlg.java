@@ -11,11 +11,13 @@ import java.util.Map;
  * Created by envoy on 18.04.2017.
  */
 public class GrowthAlg {
+    public static double TOP_MAX_ENERGY_DELTA = 0.005;
+
     public static Conformation buildBestConf(Bits bits, int n, int iterations) {
         Conformation conf = null;
 
         Map<String, Conformation> results = new HashMap<>();
-        buildConfRecursive(bits, n, iterations, results);
+        buildConfRecursive(bits.getBites().toString(), n, iterations, results);
         for (int i = 0; i < results.size(); i++) {
             if ((conf == null) || (conf.getEnergy() > results.get(0).getEnergy())) {
                 conf = results.get(0);
@@ -24,23 +26,23 @@ public class GrowthAlg {
         return conf;
     }
 
-    private static void buildConfRecursive(final Bits bits, final int n, int iterations, final Map<String, Conformation> results) {
+    private static void buildConfRecursive(final String bits, final int n, int iterations, final Map<String, Conformation> results) {
         //TODO add some logic
-        if (results.containsKey(bits.getBites().toString())) {
+        if (results.containsKey(bits)) {
             return;
         }
 
         int currSize = 0;
-        for (int i = 0; i < bits.getSize(); i++) {
-            if (bits.get(i) == '1') currSize++;
+        for (int i = 0; i < bits.length(); i++) {
+            if (bits.charAt(i) == '1') currSize++;
         }
 
         if (currSize == n) {
-            results.put(bits.getBites().toString(), ClusterMath.calcWithStartConf(bits, true));
+            results.put(bits, ClusterMath.calcWithStartConf(new Bits(bits.length(), bits), true));
             return;
         }
 
-        ArrayList<Bits> temp = findBestAdjacentAtom(bits);
+        ArrayList<String> temp = findBestAdjacentAtom(bits);
 
         int itersMin = 1;
         if (iterations > 0) {
@@ -53,16 +55,43 @@ public class GrowthAlg {
         }
     }
 
-    public static ArrayList<Bits> findBestAdjacentAtom(Bits startBits) {
-        ArrayList<Bits> list = new ArrayList<>();
+    public static ArrayList<String> findBestAdjacentAtom(String startBits) {
+        ArrayList<String> list = new ArrayList<>();
 
-        ArrayList<Bits> adjacentList = new ArrayList<>();
-        //TODO move smegH_2017 to adjacentList
-
-        for (Bits bits : adjacentList) {
-            //TODO TOP_MAX_2017 from matlab to list
+        ArrayList<String> adjacentList = new ArrayList<>();
+        int adjacentMax = 0;
+        StringBuilder sb = new StringBuilder(startBits);
+        for (int i = 0; i < startBits.length(); i++) {
+            if (startBits.charAt(i) == '0') {
+                int temp = ClusterMath.calcAdjacentNunberWithStartConf(startBits, i);
+                if (temp > adjacentMax) {
+                    adjacentMax = temp;
+                    adjacentList.clear();
+                }
+                if (temp == adjacentMax) {
+                    sb.setCharAt(i, '1');
+                    adjacentList.add(sb.toString());
+                    sb.setCharAt(i, '0');
+                }
+            }
         }
 
+        ArrayList<Conformation> conformations = new ArrayList<>();
+        Conformation conf = null;
+        double minEnergy = 0;
+        for (String bits : adjacentList) {
+            conf = ClusterMath.calcWithStartConf(new Bits(bits.length(), bits), false);
+            if (conf.getEnergy() < minEnergy) {
+                minEnergy = conf.getEnergy();
+            }
+            conformations.add(conf);
+        }
+
+        for (Conformation conformation : conformations) {
+            if (((Math.abs(conformation.getEnergy() - minEnergy)) / minEnergy) < TOP_MAX_ENERGY_DELTA) {
+                list.add(conformation.getBits().getBites().toString());
+            }
+        }
         return list;
     }
 }

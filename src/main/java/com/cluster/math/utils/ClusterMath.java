@@ -34,7 +34,17 @@ public class ClusterMath {
         return calcE(new Bits(startConf.getSize(), sb), isLocalOpt);
     }
 
-    public static Conformation calcE(Bits bits, boolean isLocalOpt) {
+    public static int calcAdjacentNunberWithStartConf(String bits, int atom) {
+        if (atom >= bits.length()) {
+            throw new IllegalArgumentException("Invalid bits size");
+        }
+
+        //TODO add logic
+
+        return 0;
+    }
+
+    private static Conformation calcE(Bits bits, boolean isLocalOpt) {
         if (bits.getSize() != blablaVertices.size()) {
             throw new IllegalArgumentException("Invalid bits size");
         }

@@ -9,7 +9,9 @@ import com.cluster.math.model.Conformation;
  * Created by envoy on 17.04.2017.
  */
 public class Efficiency {
-
+    public static final int INF_SUP_ITERATIONS = 10;
+    public static final int INF_ITERATIONS = 10;
+    public static final int SUP_ITERATIONS = 10;
     private MinsRepository rep;
     private long x;
     private Bits xInf;
@@ -40,12 +42,12 @@ public class Efficiency {
         }
 
         if (k == Strongin.getK()) {
-            Conformation conf = findBestConf(new Bits(sb.length(), sb), 10);
+            Conformation conf = findBestConf(new Bits(sb.length(), sb), INF_SUP_ITERATIONS);
             rep.tryAddConf(conf);
             z = conf.getEnergy();
         } else {
-            Conformation confInf = findBestConf(getFirstAtoms(xInf, Strongin.getK()), 10);
-            Conformation confSup = findBestConf(getFirstAtoms(xSup, Strongin.getK()), 10);
+            Conformation confInf = findBestConf(getFirstAtoms(xInf, Strongin.getK()), INF_ITERATIONS);
+            Conformation confSup = findBestConf(getFirstAtoms(xSup, Strongin.getK()), SUP_ITERATIONS);
 
             z = confInf.getEnergy() + (confSup.getEnergy() - confInf.getEnergy()) * (x - xInf.getNumber()) / (xSup.getNumber() - xInf.getNumber());
             rep.tryAddConf((confInf.getEnergy() < confSup.getEnergy()) ? confInf : confSup);
