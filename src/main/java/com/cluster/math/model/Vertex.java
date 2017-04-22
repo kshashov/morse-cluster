@@ -12,6 +12,10 @@ public class Vertex {
         this.z = z;
     }
 
+    public Vertex(Vertex vertex) {
+        this(vertex.x, vertex.y, vertex.z);
+    }
+
     public double getX() {
         return x;
     }
@@ -25,7 +29,9 @@ public class Vertex {
     }
 
     public double distanceTo(Vertex vertex) {
-        //TODO code
-        return 0.0;
+        double rx = (x - vertex.x);
+        double ry = (y - vertex.y);
+        double rz = (z - vertex.z);
+        return Math.sqrt(rx * rx + ry * ry + rz * rz);
     }
 }

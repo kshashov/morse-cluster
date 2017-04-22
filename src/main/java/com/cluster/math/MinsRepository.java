@@ -15,7 +15,6 @@ public class MinsRepository {
     private ArrayList<Conformation> mins;
     private Map<String, Conformation> cache;
 
-
     public MinsRepository(int size) {
         this.mins = new ArrayList<>();
         this.count = 0;
@@ -25,7 +24,29 @@ public class MinsRepository {
 
     public boolean tryAddConf(Conformation conformation) {
         //TODO
+        for (Conformation conf : mins) {
+            if (conf.getBits().getBites().toString().equals(conformation.getBits().getBites().toString())) {
+                return false;
+            }
+        }
+
+        if (mins.size() < size) {
+            mins.add(conformation);
+            return true;
+        }
+
+        for (int i = 0; i < mins.size(); i++) {
+            if (conformation.getEnergy() < mins.get(i).getEnergy()) {
+                mins.set(i, conformation);
+                return true;
+            }
+        }
+
         return false;
+    }
+
+    public ArrayList<Conformation> getMins() {
+        return mins;
     }
 
     public Map<String, Conformation> getCache() {

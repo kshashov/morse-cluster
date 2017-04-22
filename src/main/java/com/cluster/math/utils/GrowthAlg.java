@@ -1,5 +1,6 @@
 package com.cluster.math.utils;
 
+import com.cluster.math.TestExecutor;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Conformation;
 
@@ -11,16 +12,15 @@ import java.util.Map;
  * Created by envoy on 18.04.2017.
  */
 public class GrowthAlg {
-    public static double TOP_MAX_ENERGY_DELTA = 0.005;
 
     public static Conformation buildBestConf(Bits bits, int n, int iterations) {
         Conformation conf = null;
 
         Map<String, Conformation> results = new HashMap<>();
         buildConfRecursive(bits.getBites().toString(), n, iterations, results);
-        for (int i = 0; i < results.size(); i++) {
-            if ((conf == null) || (conf.getEnergy() > results.get(0).getEnergy())) {
-                conf = results.get(0);
+        for (Conformation conformation : results.values()) {
+            if ((conf == null) || (conf.getEnergy() > conformation.getEnergy())) {
+                conf = conformation;
             }
         }
         return conf;
@@ -75,7 +75,7 @@ public class GrowthAlg {
             }
         }
 
-        ArrayList<Conformation> conformations = new ArrayList<>();
+        Map<String, Conformation> conformations = new HashMap<>();
         Conformation conf = null;
         double minEnergy = 0;
         for (String bits : adjacentList) {
@@ -83,12 +83,12 @@ public class GrowthAlg {
             if (conf.getEnergy() < minEnergy) {
                 minEnergy = conf.getEnergy();
             }
-            conformations.add(conf);
+            conformations.put(bits, conf);
         }
 
-        for (Conformation conformation : conformations) {
-            if (((Math.abs(conformation.getEnergy() - minEnergy)) / minEnergy) < TOP_MAX_ENERGY_DELTA) {
-                list.add(conformation.getBits().getBites().toString());
+        for (Map.Entry<String, Conformation> entry : conformations.entrySet()) {
+            if (((Math.abs(entry.getValue().getEnergy() - minEnergy)) / minEnergy) < TestExecutor.getConfig().getTOP_MAX_ENERGY_DELTA()) {
+                list.add(entry.getKey());
             }
         }
         return list;

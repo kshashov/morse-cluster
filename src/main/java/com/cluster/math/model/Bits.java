@@ -17,13 +17,13 @@ public class Bits {
         number = 0;
     }
 
-    public Bits(int size, StringBuilder bits) {
-        this(size);
+    public Bits(StringBuilder bits) {
+        this(bits.length());
         setBites(bits);
     }
 
-    public Bits(int size, String bits) {
-        this(size, new StringBuilder(bits));
+    public Bits(String bits) {
+        this(new StringBuilder(bits));
     }
 
     public Bits(int size, long number) {
@@ -32,13 +32,7 @@ public class Bits {
     }
 
     private void updateNumber() {
-        int power = 0;
-        for (int i = 0; i < sb.length(); i++) {
-            if (sb.charAt(i) == '1') {
-                power++;
-            }
-        }
-        number = (long) Math.pow(2, power);
+        number = Long.parseLong('0' + sb.toString(), 2);//TODO 1 bit
     }
 
     private void setBites(StringBuilder bits) {

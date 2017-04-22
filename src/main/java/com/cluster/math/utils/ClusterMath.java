@@ -1,5 +1,6 @@
 package com.cluster.math.utils;
 
+import com.cluster.math.TestExecutor;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Conformation;
 import com.cluster.math.model.Vertex;
@@ -16,7 +17,6 @@ public class ClusterMath {
     private static ArrayList<Integer> indexes;
     private static ArrayList<Vertex> vertices;
     private static Map<String, Conformation> optCache = new HashMap<>();
-    private static double DISTANCE_MIN = 1.1;
 
     public static void init(Bits startConf, ArrayList<Vertex> blablaVertices, ArrayList<Integer> indexes) {
         ClusterMath.startConf = startConf;
@@ -39,7 +39,7 @@ public class ClusterMath {
         int count = 0;
         for (int i = 0; i < fullBits.getSize(); i++) {
             if ((i != indexes.get(atomIndex)) && (fullBits.get(i) == '1')) {
-                if (vertex.distanceTo(vertices.get(indexes.get(i))) < DISTANCE_MIN) {
+                if (vertex.distanceTo(vertices.get(i)) < TestExecutor.getConfig().getDISTANCE_MIN()) {
                     count++;
                 }
             }
@@ -58,7 +58,7 @@ public class ClusterMath {
             sb.setCharAt(indexes.get(i), stronginBits.charAt(i));
         }
 
-        return new Bits(startConf.getSize(), sb);
+        return new Bits(sb);
     }
 
     private static Conformation calcE(Bits fullBits, boolean isLocalOpt) {
@@ -73,20 +73,13 @@ public class ClusterMath {
         ArrayList<Vertex> verticesConf = new ArrayList<>();
         for (int i = 0; i < fullBits.getSize(); i++) {
             if (fullBits.get(i) == '1') {
-                verticesConf.add(vertices.get(i));
+                verticesConf.add(new Vertex(vertices.get(i)));
             }
         }
 
-        ArrayList<Vertex> verticesOpt = null;
-        if (!isLocalOpt) {
-            verticesOpt = verticesConf;
-        } else {
-            //TODO local optimization
-            verticesOpt = verticesConf;
-        }
+        ArrayList<Vertex> verticesOpt = isLocalOpt ? TestExecutor.localOpt(verticesConf) : verticesConf; //TODO local opt
 
-        double energy = getEnergy(verticesConf);
-
+        double energy = getEnergy(verticesOpt);
         Conformation conf = new Conformation(fullBits, verticesOpt, energy);
         if (isLocalOpt && !optCache.containsKey(key)) {
             optCache.put(key, conf);
@@ -95,8 +88,16 @@ public class ClusterMath {
     }
 
     private static double getEnergy(ArrayList<Vertex> verticesConf) {
-        //TODO vertices = energy
-        return 0.0;
+        double r;
+        double energy = 0;
+        for (int i = 0; i < verticesConf.size() - 1; i++) {
+            for (int j = i + 1; j < verticesConf.size(); j++) {
+                r = verticesConf.get(i).distanceTo(verticesConf.get(j));
+                energy += Math.exp(TestExecutor.getConfig().getRO() * (1 - r)) * (Math.exp(TestExecutor.getConfig().getRO() * (1 - r)) - 2);
+            }
+        }
+
+        return energy;
     }
 
 }

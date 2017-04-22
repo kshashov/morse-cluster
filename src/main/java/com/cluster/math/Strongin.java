@@ -5,19 +5,18 @@ import com.cluster.math.model.Interval;
 import com.cluster.math.utils.Efficiency;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by envoy on 15.04.2017.
  */
 public class Strongin {
-    private static final int m = 150;
-    private static final double eps = 20000;
-    private static int N = 0;
-    private static int M = 0;
-    private static int K = 0;
+    private static final long m = 150;
 
     public static double calcF(long a, long b, double zA, double zB) {
-        return m * (b - a) + (Math.pow(zB - zA, 2) / (m * (b - a))) - 2 * (zA + zB);
+        double logA = Math.log(a) / Math.log(2);
+        double logB = Math.log(b) / Math.log(2);
+        return m * (logB - logA) + (Math.pow(zB - zA, 2) / (m * (logB - logA))) - 2 * (zA + zB);
     }
 
     public MinsRepository solve(Bits a, Bits b, final int iterations, int sizeMins) {
@@ -33,19 +32,25 @@ public class Strongin {
         Bits cacheB = null;
         Efficiency cacheZB = null;
         for (int i = 0; i < iterations; i++) {
+            System.out.println("Strongin " + i);
             interval = intervals.get(ind);
-            bitsX = new Bits(M, (long) Math.ceil((interval.getA().getNumber() + interval.getB().getNumber()) / 2.0));
+            double logA = Math.log(interval.getA().getNumber()) / Math.log(2);
+            double logB = Math.log(interval.getB().getNumber()) / Math.log(2);
+            long x = (long) Math.ceil(Math.pow(2, (logA + logB) / 2.0));
+            //bitsX = new Bits(TestExecutor.getConfig().getSTRONGIN_M(), (long) Math.ceil((interval.getA().getNumber() + interval.getB().getNumber()) / 2.0));
+            bitsX = new Bits(TestExecutor.getConfig().getSTRONGIN_M(), x);
             zX = new Efficiency(rep, bitsX.getNumber());
+            isUsed = false;
 
-            if (interval.getSize() < eps) { //todo check
+            double logSize = Math.log(TestExecutor.getConfig().getSTRONGIN_EPS() / interval.getA().getNumber() + 1) / Math.log(2);
+            //if (interval.getSize() < TestExecutor.getConfig().getSTRONGIN_EPS()) { //todo check
+            if ((logB - logA) < logSize) { //todo check
                 intervals.remove(ind);
             } else {
-                isUsed = false;
                 cacheB = interval.getB();
                 cacheZB = interval.getZB();
                 if (zX.getXInf().getNumber() >= interval.getA().getNumber()) {
                     interval.setB(bitsX, zX);
-                    intervals.add(interval);
                     isUsed = true;
                 }
 
@@ -54,7 +59,7 @@ public class Strongin {
                         intervals.add(new Interval(rep, bitsX, cacheB, zX, cacheZB));
                     } else {
                         interval.setA(bitsX, zX);
-                        intervals.add(interval);
+                        interval.setA(bitsX, zX);
                         isUsed = true;
                     }
                 }
@@ -62,6 +67,10 @@ public class Strongin {
                 if (!isUsed) {
                     intervals.remove(ind);
                 }
+            }
+
+            if (intervals.size() == 0) {
+                break;
             }
 
             ind = 0;
@@ -72,18 +81,20 @@ public class Strongin {
                 }
             }
         }
+
+        Comparator<Interval> comparator = new Comparator<Interval>() {
+            @Override
+            public int compare(Interval left, Interval right) {
+                return (int) (left.getA().getNumber() - right.getA().getNumber()); // use your logic
+            }
+        };
+
+        intervals.sort(comparator);
+        for (Interval interval1 : intervals) {
+            double logA = Math.log(interval1.getA().getNumber()) / Math.log(2);
+            double logB = Math.log(interval1.getB().getNumber()) / Math.log(2);
+            System.out.println("[" + logA + "; " + logB + "] " + interval1.getF() + " " + interval1.getZA().getZ() + "-" + interval1.getZB().getZ());
+        }
         return rep;
-    }
-
-    public static int getN() {
-        return N;
-    }
-
-    public static int getM() {
-        return M;
-    }
-
-    public static int getK() {
-        return K;
     }
 }
