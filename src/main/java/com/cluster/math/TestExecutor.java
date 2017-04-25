@@ -100,8 +100,10 @@ public class TestExecutor {
         MinsRepository rep = strongin.solve(new Bits(sbA), new Bits(sbB), config.getSTRONGIN_ITERATIONS(), config.getSTRONGIN_REPOSITORY_SIZE());
 
         //result
+        Conformation opt;
         for (Conformation conformation : rep.getMins()) {
-            System.out.println(conformation.getEnergy() + " -- " + conformation.getBits().getBites());
+            opt = ClusterMath.calc(conformation.getBits(), true);
+            System.out.println(opt.getEnergy() + " -- " + opt.getBits().getBites());
         }
 
         //close all
@@ -126,7 +128,7 @@ public class TestExecutor {
     }
 
     private static void setupConfig() {
-        config = new Config("D:\\WORKSPACE\\MorseCluster\\", "input.txt", "111111100001110001111100000000000000010000111000111111", 38);
+        config = new Config("D:\\WORKSPACE\\MorseCluster\\", "input.txt", "111111100001110001111100000000000000010000111000111111", 37);
 
         int n2 = 0;
         Bits startConf = new Bits(new StringBuilder(config.getSTART_CONF()));

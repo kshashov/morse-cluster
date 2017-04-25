@@ -32,19 +32,19 @@ public class Strongin {
         Bits cacheB = null;
         Efficiency cacheZB = null;
         for (int i = 0; i < iterations; i++) {
-            System.out.println("Strongin " + i);
+            if (i % 100 == 0) {
+                System.out.println("Strongin " + i);
+            }
             interval = intervals.get(ind);
             double logA = Math.log(interval.getA().getNumber()) / Math.log(2);
             double logB = Math.log(interval.getB().getNumber()) / Math.log(2);
-            long x = (long) Math.ceil(Math.pow(2, (logA + logB) / 2.0));
-            //bitsX = new Bits(TestExecutor.getConfig().getSTRONGIN_M(), (long) Math.ceil((interval.getA().getNumber() + interval.getB().getNumber()) / 2.0));
+            long x = (interval.getB().getNumber() + interval.getA().getNumber()) / 2; //Math.ceil(Math.pow(2, (logA + logB) / 2.0));
             bitsX = new Bits(TestExecutor.getConfig().getSTRONGIN_M(), x);
             zX = new Efficiency(rep, bitsX.getNumber());
             isUsed = false;
 
             double logSize = Math.log(TestExecutor.getConfig().getSTRONGIN_EPS() / interval.getA().getNumber() + 1) / Math.log(2);
-            //if (interval.getSize() < TestExecutor.getConfig().getSTRONGIN_EPS()) { //todo check
-            if ((logB - logA) < logSize) { //todo check
+            if ((logB - logA) / 2.0 < logSize) { //todo check
                 intervals.remove(ind);
             } else {
                 cacheB = interval.getB();
@@ -85,7 +85,7 @@ public class Strongin {
         Comparator<Interval> comparator = new Comparator<Interval>() {
             @Override
             public int compare(Interval left, Interval right) {
-                return (int) (left.getA().getNumber() - right.getA().getNumber()); // use your logic
+                return (int) (left.getA().getNumber() - right.getA().getNumber());
             }
         };
 

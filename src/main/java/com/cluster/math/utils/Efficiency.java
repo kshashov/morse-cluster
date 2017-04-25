@@ -41,18 +41,17 @@ public class Efficiency {
                 sb.append('0');
             }
         }
-
+        Conformation conf;
         if (k == K) {
-            Conformation conf = findBestConf(new Bits(sb), TestExecutor.getConfig().getINF_SUP_ITERATIONS());
-            rep.tryAddConf(conf);
+            conf = findBestConf(new Bits(sb), TestExecutor.getConfig().getINF_SUP_ITERATIONS());
             z = conf.getEnergy();
         } else {
             Conformation confInf = findBestConf(getFirstAtoms(xInf, K), TestExecutor.getConfig().getINF_ITERATIONS());
             Conformation confSup = findBestConf(getFirstAtoms(xSup, K), TestExecutor.getConfig().getSUP_ITERATIONS());
-
-            z = confInf.getEnergy() + (confSup.getEnergy() - confInf.getEnergy()) * (x - xInf.getNumber()) / (xSup.getNumber() - xInf.getNumber());
-            rep.tryAddConf((confInf.getEnergy() < confSup.getEnergy()) ? confInf : confSup);
+            conf = (confInf.getEnergy() < confSup.getEnergy()) ? confInf : confSup;
+            z = confInf.getEnergy() + (confSup.getEnergy() - confInf.getEnergy()) * (x - xInf.getNumber()) / (xSup.getNumber() - xInf.getNumber()); //TODO not log?
         }
+        rep.tryAddConf(conf);
     }
 
     //call GrowthAlg or use cache

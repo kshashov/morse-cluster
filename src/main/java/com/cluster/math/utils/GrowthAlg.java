@@ -37,7 +37,7 @@ public class GrowthAlg {
         }
 
         if (currSize == n) {
-            results.put(bits, ClusterMath.calcWithStartConf(bits, true));
+            results.put(bits, ClusterMath.calcWithStartConf(bits, false));
             return;
         }
 

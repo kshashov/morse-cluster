@@ -12,15 +12,16 @@ public class Config {
     private int STRONGIN_N;
     private int STRONGIN_M;
     private int STRONGIN_K = 6;
-    private int STRONGIN_ITERATIONS = 1000;
-    private int STRONGIN_REPOSITORY_SIZE = 30;
+    private int STRONGIN_ITERATIONS = 2000;
+    private int STRONGIN_REPOSITORY_SIZE = 20;
     private double STRONGIN_EPS = 20000;
     private double DISTANCE_MIN = 1.1;
     private double RO = 14;
     private double TOP_MAX_ENERGY_DELTA = 0.05;
-    private int INF_SUP_ITERATIONS = 1;
-    private int INF_ITERATIONS = 10;
-    private int SUP_ITERATIONS = 10;
+    private int INF_SUP_ITERATIONS = 10000;
+    private int INF_ITERATIONS = 10000;
+    private int SUP_ITERATIONS = 10000;
+    private double ROU_LO = 2;
 
     public Config() {
     }
@@ -123,5 +124,9 @@ public class Config {
 
     public void setSTRONGIN_EPS(double STRONGIN_EPS) {
         this.STRONGIN_EPS = STRONGIN_EPS;
+    }
+
+    public double getROU_LO() {
+        return ROU_LO;
     }
 }

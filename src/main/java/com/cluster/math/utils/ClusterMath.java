@@ -28,6 +28,10 @@ public class ClusterMath {
         return calcE(getFullBits(stronginBits), isLocalOpt);
     }
 
+    public static Conformation calc(Bits fullBits, boolean isLocalOpt) {
+        return calcE(fullBits, isLocalOpt);
+    }
+
     public static int calcAdjacentNunberWithStartConf(String stronginBits, int atomIndex) {
         if (atomIndex >= stronginBits.length()) {
             throw new IllegalArgumentException("Invalid bits size");

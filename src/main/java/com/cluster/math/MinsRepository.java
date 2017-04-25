@@ -36,10 +36,24 @@ public class MinsRepository {
         }
 
         for (int i = 0; i < mins.size(); i++) {
-            if (conformation.getEnergy() < mins.get(i).getEnergy()) {
+            if ((Math.abs(conformation.getBits().getNumber() - mins.get(i).getBits().getNumber()) < TestExecutor.getConfig().getROU_LO()) && (conformation.getEnergy() < mins.get(i).getEnergy())) {
                 mins.set(i, conformation);
                 return true;
             }
+        }
+
+        int maxEnergyIndex = 0;
+        double maxEnergy = mins.get(maxEnergyIndex).getEnergy();
+        for (int i = 0; i < mins.size(); i++) {
+            if (mins.get(i).getEnergy() >= maxEnergy) {
+                maxEnergy = mins.get(i).getEnergy();
+                maxEnergyIndex = i;
+            }
+        }
+
+        if (conformation.getEnergy() < maxEnergy) {
+            mins.set(maxEnergyIndex, conformation);
+            return true;
         }
 
         return false;
