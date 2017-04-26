@@ -49,12 +49,12 @@ public class Strongin {
             } else {
                 cacheB = interval.getB();
                 cacheZB = interval.getZB();
-                if (zX.getXInf().getNumber() >= interval.getA().getNumber()) {
+                if ((zX.getXInf().getNumber() >= interval.getA().getNumber()) && (zX.getXInf().getNumber() <= interval.getB().getNumber())) {
                     interval.setB(bitsX, zX);
                     isUsed = true;
                 }
 
-                if (zX.getXSup().getNumber() >= bitsX.getNumber()) {
+                if ((zX.getXSup().getNumber() >= bitsX.getNumber()) && (zX.getXSup().getNumber() <= cacheB.getNumber())) {
                     if (isUsed) {
                         intervals.add(new Interval(rep, bitsX, cacheB, zX, cacheZB));
                     } else {

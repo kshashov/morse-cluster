@@ -26,10 +26,9 @@ public class Efficiency {
         int M = TestExecutor.getConfig().getSTRONGIN_M();
         int K = TestExecutor.getConfig().getSTRONGIN_K();
 
-        //TODO inf sup
-        long[] res = TestExecutor.inf_sup(x, N, M);
-        xSup = new Bits(M, res[0]);
-        xInf = new Bits(M, res[1]);
+        StringBuilder[] res = InfSupFinder.findInfSup(x, N, M);
+        xSup = new Bits(res[0]);
+        xInf = new Bits(res[1]);
 
         int k = 0;
         StringBuilder sb = new StringBuilder();

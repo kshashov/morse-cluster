@@ -43,7 +43,7 @@ public class TestExecutor {
         return proxy;
     }
 
-    public static long[] inf_sup(long x, int N, int M) {
+   /* public static long[] inf_sup(long x, int N, int M) {
         getMatlabProxy();
         Object[] out = null;
         try {
@@ -54,7 +54,7 @@ public class TestExecutor {
         double xSup = ((double[]) out[0])[0];
         double xInf = ((double[]) out[1])[0];
         return new long[]{(long) xSup, (long) xInf};
-    }
+    }*/
 
     public static ArrayList<Vertex> localOpt(ArrayList<Vertex> vertices) {
         getMatlabProxy();
@@ -128,7 +128,7 @@ public class TestExecutor {
     }
 
     private static void setupConfig() {
-        config = new Config("D:\\WORKSPACE\\MorseCluster\\", "input.txt", "111111100001110001111100000000000000010000111000111111", 37);
+        config = new Config("D:\\WORKSPACE\\MorseCluster\\", "input.txt", "111111100001110001111100000000000000010000111000111111", 38);
 
         int n2 = 0;
         Bits startConf = new Bits(new StringBuilder(config.getSTART_CONF()));
