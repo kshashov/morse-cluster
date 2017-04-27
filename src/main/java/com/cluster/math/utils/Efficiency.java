@@ -5,17 +5,19 @@ import com.cluster.math.TestExecutor;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Conformation;
 
+import java.math.BigDecimal;
+
 /**
  * Created by envoy on 17.04.2017.
  */
 public class Efficiency {
     private MinsRepository rep;
-    private long x;
+    private Bits x;
     private Bits xInf;
     private Bits xSup;
     private double z;
 
-    public Efficiency(MinsRepository repository, long x) {
+    public Efficiency(MinsRepository repository, Bits x) {
         this.rep = repository;
         this.x = x;
         updateData();
@@ -26,7 +28,7 @@ public class Efficiency {
         int M = TestExecutor.getConfig().getSTRONGIN_M();
         int K = TestExecutor.getConfig().getSTRONGIN_K();
 
-        StringBuilder[] res = InfSupFinder.findInfSup(x, N, M);
+        StringBuilder[] res = InfSupFinder.findInfSup(x.getBites().toString(), N, M);
         xSup = new Bits(res[0]);
         xInf = new Bits(res[1]);
 
@@ -48,7 +50,8 @@ public class Efficiency {
             Conformation confInf = findBestConf(getFirstAtoms(xInf, K), TestExecutor.getConfig().getINF_ITERATIONS());
             Conformation confSup = findBestConf(getFirstAtoms(xSup, K), TestExecutor.getConfig().getSUP_ITERATIONS());
             conf = (confInf.getEnergy() < confSup.getEnergy()) ? confInf : confSup;
-            z = confInf.getEnergy() + (confSup.getEnergy() - confInf.getEnergy()) * (x - xInf.getNumber()) / (xSup.getNumber() - xInf.getNumber()); //TODO not log?
+            BigDecimal t = new BigDecimal(confSup.getEnergy() - confInf.getEnergy()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE(), BigDecimal.ROUND_HALF_UP);
+            z = confInf.getEnergy() + t.multiply(new BigDecimal(x.getNumber().subtract(xInf.getNumber()).divide(xSup.getNumber().subtract(xInf.getNumber()))).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).doubleValue(); //TODO not log?
         }
         rep.tryAddConf(conf);
     }
@@ -76,7 +79,7 @@ public class Efficiency {
         return new Bits(sb);
     }
 
-    public long getX() {
+    public Bits getX() {
         return x;
     }
 

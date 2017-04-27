@@ -128,7 +128,7 @@ public class TestExecutor {
     }
 
     private static void setupConfig() {
-        config = new Config("D:\\WORKSPACE\\MorseCluster\\", "input.txt", "111111100001110001111100000000000000010000111000111111", 38);
+        config = new Config("D:\\WORKSPACE\\MorseCluster\\", "input.txt", "111111100001110001111100000000000000010000111000111111", 37);
 
         int n2 = 0;
         Bits startConf = new Bits(new StringBuilder(config.getSTART_CONF()));

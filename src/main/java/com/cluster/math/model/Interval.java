@@ -2,8 +2,9 @@ package com.cluster.math.model;
 
 import com.cluster.math.MinsRepository;
 import com.cluster.math.Strongin;
-import com.cluster.math.model.Bits;
 import com.cluster.math.utils.Efficiency;
+
+import java.math.BigInteger;
 
 /**
  * Created by envoy on 17.04.2017.
@@ -20,8 +21,8 @@ public class Interval {
         this.a = a;
         this.b = b;
         this.rep = repository;
-        zA = new Efficiency(rep, a.getNumber());
-        zB = new Efficiency(rep, b.getNumber());
+        zA = new Efficiency(rep, a);
+        zB = new Efficiency(rep, b);
         updateF();
     }
 
@@ -44,7 +45,7 @@ public class Interval {
 
     public void setA(Bits a) {
         this.a = a;
-        zA = new Efficiency(rep, a.getNumber());
+        zA = new Efficiency(rep, a);
         updateF();
     }
 
@@ -56,7 +57,7 @@ public class Interval {
 
     public void setB(Bits b) {
         this.b = b;
-        zB = new Efficiency(rep, b.getNumber());
+        zB = new Efficiency(rep, b);
         updateF();
     }
 
@@ -82,7 +83,7 @@ public class Interval {
         return zB;
     }
 
-    public long getSize() {
-        return b.getNumber() - a.getNumber();
+    public BigInteger getSize() {
+        return b.getNumber().subtract(a.getNumber());
     }
 }

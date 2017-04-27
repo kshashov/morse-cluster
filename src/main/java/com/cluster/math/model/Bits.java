@@ -1,11 +1,13 @@
 package com.cluster.math.model;
 
+import java.math.BigInteger;
+
 /**
  * Created by envoy on 15.04.2017.
  */
 public class Bits {
     private StringBuilder sb;
-    private long number;
+    private BigInteger number;
     private int size;
 
     public Bits(int size) {
@@ -14,7 +16,7 @@ public class Bits {
         for (int i = 0; i < size; i++) {
             sb.append('0');
         }
-        number = 0;
+        number = new BigInteger("0");
     }
 
     public Bits(StringBuilder bits) {
@@ -26,22 +28,22 @@ public class Bits {
         this(new StringBuilder(bits));
     }
 
-    public Bits(int size, long number) {
+    public Bits(int size, BigInteger number) {
         this(size);
         setBites(number);
     }
 
     private void updateNumber() {
-        number = Long.parseLong('0' + sb.toString(), 2);//TODO 1 bit
+        number = new BigInteger('0' + sb.toString(), 2); //TODO 1 bit
     }
 
     private void setBites(StringBuilder bits) {
         setBites(bits, true);
     }
 
-    private void setBites(long number) {
+    private void setBites(BigInteger number) {
         this.number = number;
-        String temp = Long.toBinaryString(number);
+        String temp = number.toString(2);
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < size - temp.length(); i++) {
             stringBuilder.append('0');
@@ -73,7 +75,7 @@ public class Bits {
         throw new IllegalArgumentException("invalid index");
     }
 
-    public long getNumber() {
+    public BigInteger getNumber() {
         return number;
     }
 

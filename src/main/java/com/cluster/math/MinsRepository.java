@@ -2,6 +2,7 @@ package com.cluster.math;
 
 import com.cluster.math.model.Conformation;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +37,10 @@ public class MinsRepository {
         }
 
         for (int i = 0; i < mins.size(); i++) {
-            if ((Math.abs(conformation.getBits().getNumber() - mins.get(i).getBits().getNumber()) < TestExecutor.getConfig().getROU_LO()) && (conformation.getEnergy() < mins.get(i).getEnergy())) {
+            if ((conformation.getBits().getNumber().subtract(mins.get(i).getBits().getNumber()).abs().compareTo(
+                    new BigInteger(String.valueOf(TestExecutor.getConfig().getROU_LO()))
+            ) < 0)
+                    && (conformation.getEnergy() < mins.get(i).getEnergy())) {
                 mins.set(i, conformation);
                 return true;
             }

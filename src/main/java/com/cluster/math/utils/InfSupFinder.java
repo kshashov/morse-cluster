@@ -6,8 +6,8 @@ import com.cluster.math.model.Bits;
  * Created by envoy on 26.04.2017.
  */
 public class InfSupFinder {
-    public static StringBuilder[] findInfSup(long x, int Natom, int Mcl) {
-        StringBuilder sbX = new Bits(Mcl, x).getBites();
+    public static StringBuilder[] findInfSup(String x, int Natom, int Mcl) {
+        StringBuilder sbX = new StringBuilder(x);
 
         int N = 0;
         int M = Natom;
