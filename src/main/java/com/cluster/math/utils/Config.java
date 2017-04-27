@@ -4,8 +4,8 @@ package com.cluster.math.utils;
  * Created by envoy on 21.04.2017.
  */
 public class Config {
-    private String INPUT_PATH;
     private String INPUT_FILENAME;
+    private String OUTPUT_FOLDERNAME;
     private String START_CONF;
     private int N;
     private int M;
@@ -21,21 +21,22 @@ public class Config {
     private int INF_SUP_ITERATIONS = 10000;
     private int INF_ITERATIONS = 10000;
     private int SUP_ITERATIONS = 10000;
-    private double ROU_LO = 2;
+    private long ROU_LO = 2;
+    private int BIG_DECIMAL_SCALE = 50;
 
     public Config() {
     }
 
-    public Config(String INPUT_PATH, String INPUT_FILENAME, String START_CONF, int n) {
+    /*public Config(String INPUT_PATH, String INPUT_FILENAME, String START_CONF, int n) {
         this.INPUT_PATH = INPUT_PATH;
         this.INPUT_FILENAME = INPUT_FILENAME;
         this.N = n;
         this.START_CONF = START_CONF;
         this.M = START_CONF.length();
-    }
+    }*/
 
-    public String getINPUT_PATH() {
-        return INPUT_PATH;
+    public void init() {
+        this.M = START_CONF.length();
     }
 
     public String getINPUT_FILENAME() {
@@ -126,7 +127,23 @@ public class Config {
         this.STRONGIN_EPS = STRONGIN_EPS;
     }
 
-    public double getROU_LO() {
+    public long getROU_LO() {
         return ROU_LO;
+    }
+
+    public int getBIG_DECIMAL_SCALE() {
+        return BIG_DECIMAL_SCALE;
+    }
+
+    public void setBIG_DECIMAL_SCALE(int BIG_DECIMAL_SCALE) {
+        this.BIG_DECIMAL_SCALE = BIG_DECIMAL_SCALE;
+    }
+
+    public String getOUTPUT_FOLDERNAME() {
+        return OUTPUT_FOLDERNAME;
+    }
+
+    public void setOUTPUT_FOLDERNAME(String OUTPUT_FOLDERNAME) {
+        this.OUTPUT_FOLDERNAME = OUTPUT_FOLDERNAME;
     }
 }

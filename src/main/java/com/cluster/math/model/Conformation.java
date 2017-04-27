@@ -27,4 +27,14 @@ public class Conformation {
     public ArrayList<Vertex> getVertices() {
         return vertices;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(bits.getBites()).append(System.lineSeparator()).append("E = ").append(getEnergy()).append(System.lineSeparator());
+        for (Vertex vertex : vertices) {
+            sb.append(vertex.getX()).append(" ").append(vertex.getY()).append(" ").append(vertex.getZ()).append(System.lineSeparator());
+        }
+        return sb.toString();
+    }
 }

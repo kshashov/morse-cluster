@@ -4,6 +4,7 @@ import com.cluster.math.MinsRepository;
 import com.cluster.math.TestExecutor;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Conformation;
+import matlabcontrol.MatlabInvocationException;
 
 import java.math.BigDecimal;
 
@@ -17,13 +18,13 @@ public class Efficiency {
     private Bits xSup;
     private double z;
 
-    public Efficiency(MinsRepository repository, Bits x) {
+    public Efficiency(MinsRepository repository, Bits x) throws MatlabInvocationException {
         this.rep = repository;
         this.x = x;
         updateData();
     }
 
-    private void updateData() {
+    private void updateData() throws MatlabInvocationException {
         int N = TestExecutor.getConfig().getSTRONGIN_N();
         int M = TestExecutor.getConfig().getSTRONGIN_M();
         int K = TestExecutor.getConfig().getSTRONGIN_K();
@@ -57,7 +58,7 @@ public class Efficiency {
     }
 
     //call GrowthAlg or use cache
-    private Conformation findBestConf(Bits bits, int iterations) {
+    private Conformation findBestConf(Bits bits, int iterations) throws MatlabInvocationException {
         String key = bits.getBites().toString();
         if (!rep.getCache().containsKey(key)) {
             rep.getCache().put(key, GrowthAlg.buildBestConf(bits, TestExecutor.getConfig().getSTRONGIN_N(), iterations));

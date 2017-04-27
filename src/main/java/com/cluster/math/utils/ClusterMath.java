@@ -4,6 +4,7 @@ import com.cluster.math.TestExecutor;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Conformation;
 import com.cluster.math.model.Vertex;
+import matlabcontrol.MatlabInvocationException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +25,11 @@ public class ClusterMath {
         ClusterMath.indexes = indexes;
     }
 
-    public static Conformation calcWithStartConf(String stronginBits, boolean isLocalOpt) {
+    public static Conformation calcWithStartConf(String stronginBits, boolean isLocalOpt) throws MatlabInvocationException {
         return calcE(getFullBits(stronginBits), isLocalOpt);
     }
 
-    public static Conformation calc(Bits fullBits, boolean isLocalOpt) {
+    public static Conformation calc(Bits fullBits, boolean isLocalOpt) throws MatlabInvocationException {
         return calcE(fullBits, isLocalOpt);
     }
 
@@ -65,7 +66,7 @@ public class ClusterMath {
         return new Bits(sb);
     }
 
-    private static Conformation calcE(Bits fullBits, boolean isLocalOpt) {
+    private static Conformation calcE(Bits fullBits, boolean isLocalOpt) throws MatlabInvocationException {
         if (fullBits.getSize() != vertices.size()) {
             throw new IllegalArgumentException("Invalid bits size");
         }

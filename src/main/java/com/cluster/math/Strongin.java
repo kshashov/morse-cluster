@@ -3,6 +3,7 @@ package com.cluster.math;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Interval;
 import com.cluster.math.utils.Efficiency;
+import matlabcontrol.MatlabInvocationException;
 import org.nevec.rjm.BigDecimalMath;
 
 import java.math.BigDecimal;
@@ -17,6 +18,8 @@ import java.util.Comparator;
 public class Strongin {
     private static final long m = 150;
     private static final BigDecimal log2 = BigDecimalMath.log(new BigDecimal(2).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE()));
+    private ArrayList<Interval> intervals;
+    private MinsRepository rep;
 
     public static double calcF(BigInteger a, BigInteger b, double zA, double zB) {
         double logA = BigDecimalMath.log(new BigDecimal(a).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
@@ -24,9 +27,9 @@ public class Strongin {
         return m * (logB - logA) + (Math.pow(zB - zA, 2) / (m * (logB - logA))) - 2 * (zA + zB);
     }
 
-    public MinsRepository solve(Bits a, Bits b, final int iterations, int sizeMins) {
-        MinsRepository rep = new MinsRepository(sizeMins);
-        ArrayList<Interval> intervals = new ArrayList<>();
+    public MinsRepository solve(Bits a, Bits b, final int iterations, int sizeMins) throws MatlabInvocationException {
+        rep = new MinsRepository(sizeMins);
+        intervals = new ArrayList<>();
         intervals.add(new Interval(rep, a, b));
 
         int ind = 0;
@@ -98,8 +101,16 @@ public class Strongin {
         for (Interval interval1 : intervals) {
             double logA = BigDecimalMath.log(new BigDecimal(interval1.getA().getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
             double logB = BigDecimalMath.log(new BigDecimal(interval1.getB().getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
-            System.out.println("[" + logA + "; " + logB + "] " + interval1.getF() + " " + interval1.getZA().getZ() + "-" + interval1.getZB().getZ());
+            TestExecutor.log.println("[" + logA + "; " + logB + "] " + interval1.getF() + " " + interval1.getZA().getZ() + "-" + interval1.getZB().getZ());
         }
+        return rep;
+    }
+
+    public ArrayList<Interval> getIntervals() {
+        return intervals;
+    }
+
+    public MinsRepository getRep() {
         return rep;
     }
 }
