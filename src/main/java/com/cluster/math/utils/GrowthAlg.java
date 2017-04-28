@@ -3,7 +3,6 @@ package com.cluster.math.utils;
 import com.cluster.math.TestExecutor;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Conformation;
-import matlabcontrol.MatlabInvocationException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +13,7 @@ import java.util.Map;
  */
 public class GrowthAlg {
 
-    public static Conformation buildBestConf(Bits bits, int n, int iterations) throws MatlabInvocationException {
+    public static Conformation buildBestConf(Bits bits, int n, int iterations) {
         Conformation conf = null;
 
         Map<String, Conformation> results = new HashMap<>();
@@ -27,7 +26,7 @@ public class GrowthAlg {
         return conf;
     }
 
-    private static void buildConfRecursive(final String bits, final int n, int iterations, final Map<String, Conformation> results) throws MatlabInvocationException {
+    private static void buildConfRecursive(final String bits, final int n, int iterations, final Map<String, Conformation> results) {
         if (results.containsKey(bits)) {
             return;
         }
@@ -55,7 +54,7 @@ public class GrowthAlg {
         }
     }
 
-    public static ArrayList<String> findBestAdjacentAtom(String startBits) throws MatlabInvocationException {
+    public static ArrayList<String> findBestAdjacentAtom(String startBits) {
         ArrayList<String> list = new ArrayList<>();
 
         ArrayList<String> adjacentList = new ArrayList<>();

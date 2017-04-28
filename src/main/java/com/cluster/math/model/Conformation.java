@@ -35,6 +35,6 @@ public class Conformation {
         for (Vertex vertex : vertices) {
             sb.append(vertex.getX()).append(" ").append(vertex.getY()).append(" ").append(vertex.getZ()).append(System.lineSeparator());
         }
-        return sb.toString();
+        return sb.toString().replace(".", ",");
     }
 }

@@ -3,7 +3,6 @@ package com.cluster.math;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Interval;
 import com.cluster.math.utils.Efficiency;
-import matlabcontrol.MatlabInvocationException;
 import org.nevec.rjm.BigDecimalMath;
 
 import java.math.BigDecimal;
@@ -27,7 +26,7 @@ public class Strongin {
         return m * (logB - logA) + (Math.pow(zB - zA, 2) / (m * (logB - logA))) - 2 * (zA + zB);
     }
 
-    public MinsRepository solve(Bits a, Bits b, final int iterations, int sizeMins) throws MatlabInvocationException {
+    public MinsRepository solve(Bits a, Bits b, final int iterations, int sizeMins) {
         rep = new MinsRepository(sizeMins);
         intervals = new ArrayList<>();
         intervals.add(new Interval(rep, a, b));

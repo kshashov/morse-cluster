@@ -3,7 +3,6 @@ package com.cluster.math.model;
 import com.cluster.math.MinsRepository;
 import com.cluster.math.Strongin;
 import com.cluster.math.utils.Efficiency;
-import matlabcontrol.MatlabInvocationException;
 
 import java.math.BigInteger;
 
@@ -18,7 +17,7 @@ public class Interval {
     private Efficiency zB;
     private MinsRepository rep;
 
-    public Interval(MinsRepository repository, Bits a, Bits b) throws MatlabInvocationException {
+    public Interval(MinsRepository repository, Bits a, Bits b) {
         this.a = a;
         this.b = b;
         this.rep = repository;
@@ -44,7 +43,7 @@ public class Interval {
         return b;
     }
 
-    public void setA(Bits a) throws MatlabInvocationException {
+    public void setA(Bits a) {
         this.a = a;
         zA = new Efficiency(rep, a);
         updateF();
@@ -56,7 +55,7 @@ public class Interval {
         updateF();
     }
 
-    public void setB(Bits b) throws MatlabInvocationException {
+    public void setB(Bits b) {
         this.b = b;
         zB = new Efficiency(rep, b);
         updateF();

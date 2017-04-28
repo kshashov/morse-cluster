@@ -27,13 +27,6 @@ repositories {
     maven {
         url 'https://jitpack.io'
     }
-    /*maven {
-        url "http://maven.jzy3d.org/snapshots"
-    }
-    maven {
-        url "http://maven.jzy3d.org/releases"
-    }*/
-
     flatDir {
         dirs 'libs'
     }
@@ -56,9 +49,9 @@ dependencies {
 
     compile 'com.github.keedio:bigdecimal-math:-SNAPSHOT'
 
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
+    compile group: 'com.github.vinhkhuc', name: 'lbfgs4j', version: '0.2.1'
 
-    compile 'kephale:matlabcontrol:4.1.0'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
 
     compile "org.jogamp.gluegen:gluegen-rt:2.3.1"
     compile "org.jogamp.jogl:jogl-all:2.3.1"

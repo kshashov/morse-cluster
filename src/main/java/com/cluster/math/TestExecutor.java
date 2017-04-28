@@ -7,7 +7,6 @@ import com.cluster.math.utils.ClusterMath;
 import com.cluster.math.utils.Config;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import matlabcontrol.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,69 +16,14 @@ import java.util.Scanner;
  * Created by envoy on 05.03.2017.
  */
 public class TestExecutor {
-    private static MatlabProxy proxy;
     private static Config config;
     public static PrintStream log;
-    private static String MATLAB_FOLDER = "D:\\WORKSPACE\\MorseCluster\\";
 
     public static Config getConfig() {
         return config;
     }
 
-    public static MatlabProxy getMatlabProxy() {
-        if (proxy == null) {
-            MatlabProxyFactory factory = null;
-            MatlabProxyFactoryOptions options =
-                    new MatlabProxyFactoryOptions.Builder()
-                            .setUsePreviouslyControlledSession(true)
-                            .build();
-            factory = new MatlabProxyFactory(options);
-            try {
-                proxy = factory.getProxy();
-                proxy.eval("addpath('" + MATLAB_FOLDER + "')");
-            } catch (MatlabConnectionException e) {
-                e.printStackTrace();
-            } catch (MatlabInvocationException e) {
-                e.printStackTrace();
-            }
-        }
-        return proxy;
-    }
-
-   /* public static long[] inf_sup(long x, int N, int M) {
-        getMatlabProxy();
-        Object[] out = null;
-        try {
-            out = proxy.returningFeval("inf_sup", 2, x, N, M);
-        } catch (MatlabInvocationException e) {
-            e.printStackTrace();
-        }
-        double xSup = ((double[]) out[0])[0];
-        double xInf = ((double[]) out[1])[0];
-        return new long[]{(long) xSup, (long) xInf};
-    }*/
-
-    public static ArrayList<Vertex> localOpt(ArrayList<Vertex> vertices) throws MatlabInvocationException {
-        double[] input = new double[vertices.size() * 3];
-        int j = 0;
-        for (int i = 0; i < vertices.size(); i++) {
-            input[j++] = vertices.get(i).getX();
-            input[j++] = vertices.get(i).getY();
-            input[j++] = vertices.get(i).getZ();
-        }
-
-        Object[] out = proxy.returningFeval("LO", 1, config.getRO(), input);
-
-        double[] output = (double[]) out[0];
-        ArrayList<Vertex> verticesOpt = new ArrayList<>(vertices.size());
-        j = 0;
-        for (int i = 0; i < vertices.size(); i++) {
-            verticesOpt.add(new Vertex(output[j++], output[j++], output[j++]));
-        }
-        return verticesOpt;
-    }
-
-    public static void main(String[] args) throws MatlabInvocationException {
+    public static void main(String[] args) {
         long time = System.currentTimeMillis();
         String userDir = System.getProperty("user.dir") + "\\";
         String configPath = userDir + "config.json";
@@ -96,7 +40,6 @@ public class TestExecutor {
             e.printStackTrace();
             return;
         }
-
 
         //interval
         StringBuilder stronginOnes = new StringBuilder();
@@ -117,9 +60,8 @@ public class TestExecutor {
         System.out.println("Time: " + (System.currentTimeMillis() - time) / 1000 + "s.");
     }
 
-    private static void showResult(Strongin strongin) throws MatlabInvocationException {
+    private static void showResult(Strongin strongin) {
         //result
-        getMatlabProxy();
         Conformation opt;
         int i = 1;
         PrintWriter out;
@@ -128,23 +70,23 @@ public class TestExecutor {
             directory.mkdir();
         }
         for (Conformation conformation : strongin.getRep().getMins()) {
-            opt = ClusterMath.calc(conformation.getBits(), true);
             try {
-                String name = "[" + (i++) + "] N" + config.getN() + " M" + config.getM() + " " + opt.getEnergy();
-                out = new PrintWriter(directory.getAbsolutePath() + "\\" + name.replace(".", ",") + ".txt");
-                out.print(opt);
-                out.flush();
+                printConformation(directory, conformation, "source [" + i + "]");
+                opt = ClusterMath.calc(conformation.getBits().getBites().toString(), true);
+                printConformation(directory, opt, "[" + (i++) + "]");
+                System.out.println(opt.getEnergy() + " -- " + opt.getBits().getBites());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
-
-            System.out.println(opt.getEnergy() + " -- " + opt.getBits().getBites());
         }
 
-        //close all
-        proxy.eval("rmpath('" + MATLAB_FOLDER + "')");
-        proxy.disconnect();
+    }
+
+    private static void printConformation(File dir, Conformation conf, String prefixName) throws FileNotFoundException {
+        String name = prefixName + " N" + config.getN() + " M" + config.getM() + " " + conf.getEnergy();
+        PrintWriter out = new PrintWriter(dir.getAbsolutePath() + "\\" + name.replace(".", ",") + ".txt");
+        out.print(conf);
+        out.flush();
     }
 
     private static ArrayList<Vertex> readVertices(File file) throws FileNotFoundException {
@@ -163,10 +105,10 @@ public class TestExecutor {
         config = gson.fromJson(reader, Config.class);
 
         int n2 = 0;
-        Bits startConf = new Bits(new StringBuilder(config.getSTART_CONF()));
+        String startConf = config.getSTART_CONF();
         ArrayList<Integer> indexes = new ArrayList<>();
-        for (int i = 0; i < startConf.getSize(); i++) {
-            if (startConf.get(i) == '0') {
+        for (int i = 0; i < startConf.length(); i++) {
+            if (startConf.charAt(i) == '0') {
                 indexes.add(i);
             } else {
                 n2++;
