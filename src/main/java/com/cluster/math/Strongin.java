@@ -9,16 +9,29 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Created by envoy on 15.04.2017.
  */
 public class Strongin {
     private static final long m = 150;
-    private static final BigDecimal log2 = BigDecimalMath.log(new BigDecimal(2).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE()));
+    public static final BigDecimal log2 = BigDecimalMath.log(new BigDecimal(2).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE()));
     private ArrayList<Interval> intervals;
     private MinsRepository rep;
+    private int iterations;
+    private int sizeMins;
+    private Bits b;
+    private Bits a;
+
+    private Strongin() {
+    }
+
+    public Strongin(Bits a, Bits b, final int iterations, int sizeMins) {
+        this.a = a;
+        this.b = b;
+        this.iterations = iterations;
+        this.sizeMins = sizeMins;
+    }
 
     public static double calcF(BigInteger a, BigInteger b, double zA, double zB) {
         double logA = BigDecimalMath.log(new BigDecimal(a).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
@@ -26,9 +39,17 @@ public class Strongin {
         return m * (logB - logA) + (Math.pow(zB - zA, 2) / (m * (logB - logA))) - 2 * (zA + zB);
     }
 
-    public MinsRepository solve(Bits a, Bits b, final int iterations, int sizeMins) {
+    public MinsRepository solve() {
+        if ((a == null) || (b == null) || (iterations <= 0) || (sizeMins <= 0)) {
+            throw new IllegalArgumentException("Strongin params not exist");
+        }
+        return solve(a, b, iterations, sizeMins);
+    }
+
+
+    private MinsRepository solve(Bits a, Bits b, final int iterations, int sizeMins) {
         rep = new MinsRepository(sizeMins);
-        intervals = new ArrayList<>();
+        intervals = new ArrayList<>(iterations);
         intervals.add(new Interval(rep, a, b));
 
         int ind = 0;
@@ -89,19 +110,6 @@ public class Strongin {
             }
         }
 
-        Comparator<Interval> comparator = new Comparator<Interval>() {
-            @Override
-            public int compare(Interval left, Interval right) {
-                return left.getA().getNumber().compareTo(right.getA().getNumber());
-            }
-        };
-
-        intervals.sort(comparator);
-        for (Interval interval1 : intervals) {
-            double logA = BigDecimalMath.log(new BigDecimal(interval1.getA().getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
-            double logB = BigDecimalMath.log(new BigDecimal(interval1.getB().getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
-            TestExecutor.log.println("[" + logA + "; " + logB + "] " + interval1.getF() + " " + interval1.getZA().getZ() + "-" + interval1.getZB().getZ());
-        }
         return rep;
     }
 

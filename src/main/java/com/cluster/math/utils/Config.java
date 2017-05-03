@@ -23,6 +23,10 @@ public class Config {
     private int SUP_ITERATIONS = 10000;
     private long ROU_LO = 2;
     private int BIG_DECIMAL_SCALE = 50;
+    private int THREADS_COUNT = 2;
+    private double LO_EPS = 1e-8;
+    private int LO_MAX_ITERATIONS = 10000;
+    private int MINS_COUNT = 30;
 
     public Config() {
     }
@@ -145,5 +149,37 @@ public class Config {
 
     public void setOUTPUT_FOLDERNAME(String OUTPUT_FOLDERNAME) {
         this.OUTPUT_FOLDERNAME = OUTPUT_FOLDERNAME;
+    }
+
+    public int getTHREADS_COUNT() {
+        return THREADS_COUNT;
+    }
+
+    public void setTHREADS_COUNT(int THREADS_COUNT) {
+        this.THREADS_COUNT = THREADS_COUNT;
+    }
+
+    public double getLO_EPS() {
+        return LO_EPS;
+    }
+
+    public void setLO_EPS(double LO_EPS) {
+        this.LO_EPS = LO_EPS;
+    }
+
+    public int getLO_MAX_ITERATIONS() {
+        return LO_MAX_ITERATIONS;
+    }
+
+    public void setLO_MAX_ITERATIONS(int LO_MAX_ITERATIONS) {
+        this.LO_MAX_ITERATIONS = LO_MAX_ITERATIONS;
+    }
+
+    public int getMINS_COUNT() {
+        return MINS_COUNT;
+    }
+
+    public void setMINS_COUNT(int MINS_COUNT) {
+        this.MINS_COUNT = MINS_COUNT;
     }
 }

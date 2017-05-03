@@ -1,9 +1,11 @@
 package com.cluster.math.utils;
 
+import com.cluster.math.TestExecutor;
 import com.cluster.math.model.Conformation;
 import com.cluster.math.model.Vertex;
 import com.github.lbfgs4j.LbfgsMinimizer;
 import com.github.lbfgs4j.liblbfgs.Function;
+import com.github.lbfgs4j.liblbfgs.LbfgsConstant;
 
 import java.util.ArrayList;
 
@@ -22,8 +24,12 @@ public class Lbfgs {
             input[j++] = vertices.get(i).getZ();
         }
 
+        LbfgsConstant.LBFGS_Param params = new LbfgsConstant.LBFGS_Param(com.github.lbfgs4j.liblbfgs.Lbfgs.defaultParams());
+        params.epsilon = TestExecutor.getConfig().getLO_EPS();
+        params.max_iterations = TestExecutor.getConfig().getLO_MAX_ITERATIONS();
+
         MorseFunction morseFunction = new MorseFunction(input.length);
-        LbfgsMinimizer minimizer = new LbfgsMinimizer(false);
+        LbfgsMinimizer minimizer = new LbfgsMinimizer(params, false);
         double[] output = minimizer.minimize(morseFunction, input);
         double min = morseFunction.valueAt(output);
 
@@ -75,7 +81,7 @@ public class Lbfgs {
                         aki[1] = (xk.getY() - xi.getY()) / rki;
                         aki[2] = (xk.getZ() - xi.getZ()) / rki;
 
-                        double fki = 2 * 14 * (Math.exp(14 * (1 - rki)) - Math.exp(2 * 14 * (1 - rki)));
+                        double fki = 2 * TestExecutor.getConfig().getRO() * (Math.exp(TestExecutor.getConfig().getRO() * (1 - rki)) - Math.exp(2 * TestExecutor.getConfig().getRO() * (1 - rki)));
                         grad[3 * k + 0] += fki * aki[0];
                         grad[3 * k + 1] += fki * aki[1];
                         grad[3 * k + 2] += fki * aki[2];

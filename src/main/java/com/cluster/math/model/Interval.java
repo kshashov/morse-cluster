@@ -2,9 +2,14 @@ package com.cluster.math.model;
 
 import com.cluster.math.MinsRepository;
 import com.cluster.math.Strongin;
+import com.cluster.math.TestExecutor;
 import com.cluster.math.utils.Efficiency;
+import org.nevec.rjm.BigDecimalMath;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.util.Formatter;
 
 /**
  * Created by envoy on 17.04.2017.
@@ -85,5 +90,17 @@ public class Interval {
 
     public BigInteger getSize() {
         return b.getNumber().subtract(a.getNumber());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        double logA = BigDecimalMath.log(new BigDecimal(a.getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(Strongin.log2, RoundingMode.HALF_UP).doubleValue();
+        double logB = BigDecimalMath.log(new BigDecimal(b.getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(Strongin.log2, RoundingMode.HALF_UP).doubleValue();
+
+        Formatter formatter = new Formatter();
+        formatter.format("[%20.15f; %20.15f] f = %20.15f | zA = %20.15f | zB = %20.15f", logA, logB, f, zA.getZ(), zB.getZ());
+
+        return formatter.toString();
     }
 }
