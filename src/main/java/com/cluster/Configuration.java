@@ -5,11 +5,10 @@ import com.cluster.math.model.Vertex;
 import com.cluster.math.utils.ClusterMath;
 import com.cluster.math.utils.Config;
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -24,11 +23,16 @@ public class Configuration {
         return config;
     }
 
-    public static void setupConfig(FileReader fileReader) throws IOException {
+    public static void setupConfig(BufferedReader fileReader) throws IOException {
         Gson gson = new Gson();
-        JsonReader reader = new JsonReader(fileReader);
-        config = gson.fromJson(reader, Config.class);
-        reader.close();
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = fileReader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+        fileReader.close();
+        config = gson.fromJson(sb.toString().replace("\\", "\\\\"), Config.class);
+
         ArrayList<Vertex> vertices = readVertices(new File(config.getINPUT_FILENAME()));
 
         if ((config.getSTART_CONF() == null) || (config.getSTART_CONF().isEmpty())) {

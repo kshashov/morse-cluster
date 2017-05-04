@@ -15,10 +15,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.FileNotFoundException;
@@ -59,6 +62,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
     private static final String ERROR_WTF = "Произошла непредвиденная ошибка";
     private static final String INFO_FINISH = "Расчеты завершились успешно, потраченное время: ";
     private static final String ERROR_EXIT = "Во время расчетов работу приложения невозможно завершить";
+    private static final String ABOUT = "Справочная информация";
 
     public void initialize(URL location, ResourceBundle resources) {
         initConformations();
@@ -66,6 +70,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
         initProcess();
 
         MainApp.primaryStage.setOnCloseRequest(this);
+
         exitMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -75,6 +80,25 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
                                 WindowEvent.WINDOW_CLOSE_REQUEST
                         )
                 );
+            }
+        });
+
+        aboutMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage dialog = new Stage();
+                dialog.setTitle(ABOUT);
+                WebView webView = new WebView();
+                webView.getEngine().load(getClass().getResource("/about.html").toExternalForm());
+                VBox mainVbox = new VBox(webView, new Label("(С) Коварце А.Н., Шашов К.В."), new Label("Самарский Университет, Самара, 2017"));
+                mainVbox.setAlignment(Pos.CENTER_LEFT);
+                mainVbox.setSpacing(5);
+                mainVbox.setPadding(new Insets(10));
+                dialog.setScene(new Scene(mainVbox, 750, 400));
+                dialog.setMinWidth(720);
+                dialog.setMinHeight(400);
+
+                dialog.show();
             }
         });
     }
@@ -210,7 +234,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
     private void showFinishMsg(String s, boolean isError) {
         Alert alert = new Alert(isError ? Alert.AlertType.ERROR : Alert.AlertType.INFORMATION);
         alert.setTitle(isError ? "Ошибка" : "Информация");
-        alert.setHeaderText(isError ? "Ошибка" : "Информация");
+        alert.setHeaderText(null);
         alert.setContentText(s);
         alert.show();
         onFinish();
@@ -267,9 +291,9 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
     @Override
     public void handle(WindowEvent event) {
         if (processMenuItem.isDisable()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Ошибка");
-            alert.setHeaderText("Ошибка");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Предупреждение");
+            alert.setHeaderText(null);
             alert.setContentText(ERROR_EXIT);
             alert.show();
             event.consume();

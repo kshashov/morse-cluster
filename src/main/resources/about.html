@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset=utf-8>
+    <title>Hello Java-Buddy!</title>
+    <style>
+        .center-div {
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            text-align: justify;
+        }
+
+        .req-param {
+            color: darkred;
+        }
+
+        .param {
+            color: dodgerblue;
+        }
+    </style>
+</head>
+<body style="">
+<div style="width:700px" class="center-div" align="left">
+    <h1>Morse Cluster Solver</h1>
+    <p>Программа предназначена для решения задачи оптимизации атомных кластеров Морса. <br>Реализована в рамках
+        магистерской
+        диссертации на тему <i>"Эвристический алгоритм поиска глобально-оптимальной конформации атомного кластера
+            Морса"</i>.</p>
+    <hr/>
+    <p>Исходный код доступен на <b>https://github.com/envoy93/morse-cluster</b>. C замечаниями и предложениями просьба
+        обращаться на электронную почту <b>kirill.shashov@gmail.com.</b>
+    </p>
+    <hr/>
+    <p>Для расчета требуется две вещи: заданная решетка атомов, а также коннфигурационный файл.</p>
+    <h2>Решетка атомов</h2>
+    <p>Файл содержит последовательность координат, разделенных пробелами. В качестве
+        разделителя целых и дробных частей должна выступать запятая.</p>
+    <h3> Пример для двух атомов</h3>
+    <pre>-0,000145948625839204	-0,000135293468653289	-1,60211435991194
+0,692420247092738	0,503061394898265	-1,09171788601651</pre>
+    <h2>Конфигурационный файл *.json</h2>
+    <p> Адрес до файла может быть передан в параметрах запуска или же будет
+        использован файл <i>config.json</i> в папке с приложением. </p>
+    Обязательные параметры:
+    <ul>
+        <li><span class="req-param">INPUT_FILENAME</span>. Путь до файла с решеткой атомов</li>
+        <li><span class="req-param">OUTPUT_FOLDERNAME</span>. Путь до папки для сохранения результатов</li>
+        <li><span class="req-param">N</span>. Количество атомов в искомой конформации</li>
+    </ul>
+    Возможные параметры:
+    <ul>
+        <li><span class="param">RO</span>. Характеристика физический свойств кластера (&rho;)</li>
+        <li><span class="param">START_CONF</span>. Начальная конформация, последовательность единиц и нулей</li>
+        <li><span class="param">STRONGIN_K</span>. Количество атомов, определяемых методом Стронгина</li>
+        <li><span class="param">THREADS_COUNT</span>. Количество выч. потоков</li>
+        <li><span class="param">STRONGIN_ITERATIONS</span>. Количество итераций метода Стронгина</li>
+        <li><span class="param">MINS_COUNT</span>. Итоговое количество оптимумов</li>
+    </ul>
+    Менее значимые параметры:
+    <ul>
+        <li><span class="param">STRONGIN_REPOSITORY_SIZE</span>. Количество лучших конформаций, искомых на каждом выч.
+            потоке
+        </li>
+        <li><span class="param">STRONGIN_EPS</span>. Параметр определяет минимальную длину интервала в методе Стронгина
+        </li>
+        <li><span class="param">DISTANCE_MIN</span>. Максимальное расстояние между смежными атомами</li>
+        <li><span class="param">TOP_MAX_ENERGY_DELTA</span>. Максимальное процентное отклонение от наилучшей конформации
+            в алгоритме
+            развития. Сокращает дерево решений
+        </li>
+        <li><span class="param">INF_SUP_ITERATIONS</span>. Максимальный размер дерева решений в алгоритме развития</li>
+        <li><span class="param">LO_EPS</span>. Точность локальной оптимизации</li>
+        <li><span class="param">LO_MAX_ITERATIONS</span>. Максимальное число итераций локальной оптимизации</li>
+    </ul>
+    <h3>Пример конфигурации</h3>
+    <pre>
+{
+  "INPUT_FILENAME": "D:\WORKSPACE\MorseCluster\input.txt",
+  "OUTPUT_FOLDERNAME": "D:\WORKSPACE\MorseCluster\output",
+  "START_CONF": "111111100001110001111100000000000000010000111000111111",
+  "N": 37,
+  "STRONGIN_K": 6,
+  "STRONGIN_ITERATIONS": 500,
+  "STRONGIN_REPOSITORY_SIZE": 20,
+  "STRONGIN_EPS": 20000,
+  "DISTANCE_MIN": 1.1,
+  "RO": 14,
+  "TOP_MAX_ENERGY_DELTA": 0.01,
+  "INF_SUP_ITERATIONS": 100,
+  "ROU_LO": 2,
+  "THREADS_COUNT": 8,
+  "LO_EPS": 1e-8,
+  "LO_MAX_ITERATIONS": 10000,
+  "MINS_COUNT": 30
+}
+    </pre>
+    <h2>Результат</h2>
+    <p>Найденные конформации сохраняются в заданную папку <i>OUTPUT_FOLDERNAME</i>. Каждая структура хранится в
+        отдельном файле, содержащем битовое представление, значение энергии, а так же последовательность координат.
+        Оставшиеся в методе Стронгина интервалы сохраняются в файле <i>log.txt</i></p>
+</div>
+</body>
+</html>

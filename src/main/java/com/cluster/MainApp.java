@@ -22,13 +22,12 @@ public class MainApp extends Application {
     public void start(Stage stage) {
         primaryStage = stage;
         Parent root = null;
-        //System.out.println(getClass().get);
         try {
             root = FXMLLoader.load(getClass().getResource("/main.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-       /// setUserAgentStylesheet(STYLESHEET_MODENA);
+        setUserAgentStylesheet(STYLESHEET_MODENA);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setMinHeight(HEIGHT);

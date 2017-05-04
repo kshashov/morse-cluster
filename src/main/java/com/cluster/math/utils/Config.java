@@ -19,8 +19,8 @@ public class Config {
     private double RO = 14;
     private double TOP_MAX_ENERGY_DELTA = 0.05;
     private int INF_SUP_ITERATIONS = 1000;
-    private int INF_ITERATIONS = 1000;
-    private int SUP_ITERATIONS = 1000;
+    private int INF_ITERATIONS; //or calculated
+    private int SUP_ITERATIONS; //or calculated
     private long ROU_LO = 2;
     private int BIG_DECIMAL_SCALE = 30;
     private int THREADS_COUNT = 2;
@@ -42,6 +42,14 @@ public class Config {
 
         if (STRONGIN_ITERATIONS == 0) {
             STRONGIN_ITERATIONS = 400 * STRONGIN_K + 50 * STRONGIN_M;
+        }
+
+        if (INF_ITERATIONS == 0) {
+            INF_ITERATIONS = INF_SUP_ITERATIONS;
+        }
+
+        if (SUP_ITERATIONS == 0) {
+            SUP_ITERATIONS = INF_SUP_ITERATIONS;
         }
 
     }

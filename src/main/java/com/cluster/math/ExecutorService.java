@@ -33,7 +33,7 @@ public class ExecutorService {
         }
 
         log = new PrintStream(new File(logPath));
-        Configuration.setupConfig(new FileReader(configPath));
+        Configuration.setupConfig(new BufferedReader(new FileReader(configPath)));
         return Configuration.get();
     }
 

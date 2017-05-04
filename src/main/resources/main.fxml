@@ -19,7 +19,7 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="Помощь">
                             <items>
-                                <MenuItem mnemonicParsing="false" fx:id="aboutMenuItem" text="О программе"/>
+                                <MenuItem mnemonicParsing="false" fx:id="aboutMenuItem" text="Справка"/>
                             </items>
                         </Menu>
                     </menus>
