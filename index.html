@@ -1,1 +1,19 @@
-hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Morse Cluster Solver</title>
+    <link rel="import" href="https://github.com/envoy93/morse-cluster/blob/master/src/main/resources/about.html">
+</head>
+<body>
+<h1>Morse Cluster Solver</h1>
+<hr>
+<h1>Справочная информация: </h1>
+<script>
+    var link = document.querySelector('link[rel=import]');
+    var content = link.import.querySelector('#intro-dm');
+    document.body.appendChild(content.cloneNode(true));
+</script>
+
+</body>
+</html>
