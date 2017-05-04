@@ -1,6 +1,6 @@
 package com.cluster.math.utils;
 
-import com.cluster.math.TestExecutor;
+import com.cluster.Configuration;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Conformation;
 
@@ -76,7 +76,7 @@ public class GrowthAlg {
         }
 
         Map<String, Conformation> conformations = new HashMap<>();
-        Conformation conf = null;
+        Conformation conf;
         double minEnergy = 0;
         for (String bits : adjacentList) {
             conf = ClusterMath.calcWithStartConf(bits, false);
@@ -87,7 +87,7 @@ public class GrowthAlg {
         }
 
         for (Map.Entry<String, Conformation> entry : conformations.entrySet()) {
-            if (((Math.abs(entry.getValue().getEnergy() - minEnergy)) / minEnergy) < TestExecutor.getConfig().getTOP_MAX_ENERGY_DELTA()) {
+            if (((Math.abs(entry.getValue().getEnergy() - minEnergy)) / minEnergy) < Configuration.get().getTOP_MAX_ENERGY_DELTA()) {
                 list.add(entry.getKey());
             }
         }

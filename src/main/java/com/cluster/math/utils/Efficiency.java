@@ -1,7 +1,7 @@
 package com.cluster.math.utils;
 
+import com.cluster.Configuration;
 import com.cluster.math.MinsRepository;
-import com.cluster.math.TestExecutor;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Conformation;
 
@@ -24,9 +24,9 @@ public class Efficiency {
     }
 
     private void updateData() {
-        int N = TestExecutor.getConfig().getSTRONGIN_N();
-        int M = TestExecutor.getConfig().getSTRONGIN_M();
-        int K = TestExecutor.getConfig().getSTRONGIN_K();
+        int N = Configuration.get().getSTRONGIN_N();
+        int M = Configuration.get().getSTRONGIN_M();
+        int K = Configuration.get().getSTRONGIN_K();
 
         StringBuilder[] res = InfSupFinder.findInfSup(x.getBites().toString(), N, M);
         xSup = new Bits(res[0]);
@@ -44,14 +44,14 @@ public class Efficiency {
         }
         Conformation conf;
         if (k == K) {
-            conf = findBestConf(new Bits(sb), TestExecutor.getConfig().getINF_SUP_ITERATIONS());
+            conf = findBestConf(new Bits(sb), Configuration.get().getINF_SUP_ITERATIONS());
             z = conf.getEnergy();
         } else {
-            Conformation confInf = findBestConf(getFirstAtoms(xInf, K), TestExecutor.getConfig().getINF_ITERATIONS());
-            Conformation confSup = findBestConf(getFirstAtoms(xSup, K), TestExecutor.getConfig().getSUP_ITERATIONS());
+            Conformation confInf = findBestConf(getFirstAtoms(xInf, K), Configuration.get().getINF_ITERATIONS());
+            Conformation confSup = findBestConf(getFirstAtoms(xSup, K), Configuration.get().getSUP_ITERATIONS());
             conf = (confInf.getEnergy() < confSup.getEnergy()) ? confInf : confSup;
-            BigDecimal t = new BigDecimal(confSup.getEnergy() - confInf.getEnergy()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE(), BigDecimal.ROUND_HALF_UP);
-            z = confInf.getEnergy() + t.multiply(new BigDecimal(x.getNumber().subtract(xInf.getNumber()).divide(xSup.getNumber().subtract(xInf.getNumber()))).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).doubleValue(); //TODO not log?
+            BigDecimal t = new BigDecimal(confSup.getEnergy() - confInf.getEnergy()).setScale(Configuration.get().getBIG_DECIMAL_SCALE(), BigDecimal.ROUND_HALF_UP);
+            z = confInf.getEnergy() + t.multiply(new BigDecimal(x.getNumber().subtract(xInf.getNumber()).divide(xSup.getNumber().subtract(xInf.getNumber()))).setScale(Configuration.get().getBIG_DECIMAL_SCALE())).doubleValue(); //TODO not log?
         }
         rep.tryAddConf(conf);
     }
@@ -60,7 +60,7 @@ public class Efficiency {
     private Conformation findBestConf(Bits bits, int iterations) {
         String key = bits.getBites().toString();
         if (!rep.getCache().containsKey(key)) {
-            rep.getCache().put(key, GrowthAlg.buildBestConf(bits, TestExecutor.getConfig().getSTRONGIN_N(), iterations));
+            rep.getCache().put(key, GrowthAlg.buildBestConf(bits, Configuration.get().getSTRONGIN_N(), iterations));
         }
 
         return rep.getCache().get(key);

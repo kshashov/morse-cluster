@@ -1,8 +1,8 @@
 package com.cluster.math.model;
 
+import com.cluster.Configuration;
 import com.cluster.math.MinsRepository;
 import com.cluster.math.Strongin;
-import com.cluster.math.TestExecutor;
 import com.cluster.math.utils.Efficiency;
 import org.nevec.rjm.BigDecimalMath;
 
@@ -95,11 +95,11 @@ public class Interval {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        double logA = BigDecimalMath.log(new BigDecimal(a.getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(Strongin.log2, RoundingMode.HALF_UP).doubleValue();
-        double logB = BigDecimalMath.log(new BigDecimal(b.getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(Strongin.log2, RoundingMode.HALF_UP).doubleValue();
+        double logA = BigDecimalMath.log(new BigDecimal(a.getNumber()).setScale(Configuration.get().getBIG_DECIMAL_SCALE())).divide(Strongin.log2, RoundingMode.HALF_UP).doubleValue();
+        double logB = BigDecimalMath.log(new BigDecimal(b.getNumber()).setScale(Configuration.get().getBIG_DECIMAL_SCALE())).divide(Strongin.log2, RoundingMode.HALF_UP).doubleValue();
 
         Formatter formatter = new Formatter();
-        formatter.format("[%20.15f; %20.15f] f = %20.15f | zA = %20.15f | zB = %20.15f", logA, logB, f, zA.getZ(), zB.getZ());
+        formatter.format("[%22.15f; %22.15f] f = %22.15f | zA = %22.15f | zB = %22.15f", logA, logB, f, zA.getZ(), zB.getZ());
 
         return formatter.toString();
     }

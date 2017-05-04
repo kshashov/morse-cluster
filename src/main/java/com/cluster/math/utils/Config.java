@@ -4,25 +4,25 @@ package com.cluster.math.utils;
  * Created by envoy on 21.04.2017.
  */
 public class Config {
-    private String INPUT_FILENAME;
-    private String OUTPUT_FOLDERNAME;
-    private String START_CONF;
-    private int N;
-    private int M;
-    private int STRONGIN_N;
-    private int STRONGIN_M;
-    private int STRONGIN_K = 6;
-    private int STRONGIN_ITERATIONS = 2000;
+    private String INPUT_FILENAME;  //required
+    private String OUTPUT_FOLDERNAME;  //required
+    private String START_CONF;  //or calculated
+    private int N;  //required
+    private int M;  //only calculated
+    private int STRONGIN_N;  //only calculated
+    private int STRONGIN_M;  //only calculated
+    private int STRONGIN_K;  //or calculated
+    private int STRONGIN_ITERATIONS = 2000; //or calculated
     private int STRONGIN_REPOSITORY_SIZE = 20;
     private double STRONGIN_EPS = 20000;
     private double DISTANCE_MIN = 1.1;
     private double RO = 14;
     private double TOP_MAX_ENERGY_DELTA = 0.05;
-    private int INF_SUP_ITERATIONS = 10000;
-    private int INF_ITERATIONS = 10000;
-    private int SUP_ITERATIONS = 10000;
+    private int INF_SUP_ITERATIONS = 1000;
+    private int INF_ITERATIONS = 1000;
+    private int SUP_ITERATIONS = 1000;
     private long ROU_LO = 2;
-    private int BIG_DECIMAL_SCALE = 50;
+    private int BIG_DECIMAL_SCALE = 30;
     private int THREADS_COUNT = 2;
     private double LO_EPS = 1e-8;
     private int LO_MAX_ITERATIONS = 10000;
@@ -31,16 +31,19 @@ public class Config {
     public Config() {
     }
 
-    /*public Config(String INPUT_PATH, String INPUT_FILENAME, String START_CONF, int n) {
-        this.INPUT_PATH = INPUT_PATH;
-        this.INPUT_FILENAME = INPUT_FILENAME;
-        this.N = n;
-        this.START_CONF = START_CONF;
-        this.M = START_CONF.length();
-    }*/
-
     public void init() {
-        this.M = START_CONF.length();
+        if (M == 0) {
+            M = START_CONF.length();
+        }
+
+        if (STRONGIN_K == 0) {
+            STRONGIN_K = STRONGIN_N / 2;
+        }
+
+        if (STRONGIN_ITERATIONS == 0) {
+            STRONGIN_ITERATIONS = 400 * STRONGIN_K + 50 * STRONGIN_M;
+        }
+
     }
 
     public String getINPUT_FILENAME() {
@@ -181,5 +184,13 @@ public class Config {
 
     public void setMINS_COUNT(int MINS_COUNT) {
         this.MINS_COUNT = MINS_COUNT;
+    }
+
+    public void setM(int m) {
+        this.M = m;
+    }
+
+    public void setSTART_CONF(String START_CONF) {
+        this.START_CONF = START_CONF;
     }
 }

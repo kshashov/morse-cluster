@@ -1,5 +1,6 @@
 package com.cluster.math;
 
+import com.cluster.Configuration;
 import com.cluster.math.model.Conformation;
 
 import java.math.BigInteger;
@@ -12,13 +13,11 @@ import java.util.Map;
  */
 public class MinsRepository {
     private int size;
-    private int count;
     private ArrayList<Conformation> mins;
     private Map<String, Conformation> cache;
 
     public MinsRepository(int size) {
         this.mins = new ArrayList<>();
-        this.count = 0;
         this.size = size;
         cache = new HashMap<>();
     }
@@ -38,7 +37,7 @@ public class MinsRepository {
 
         for (int i = 0; i < mins.size(); i++) {
             if ((conformation.getBits().getNumber().subtract(mins.get(i).getBits().getNumber()).abs().compareTo(
-                    new BigInteger(String.valueOf(TestExecutor.getConfig().getROU_LO()))
+                    new BigInteger(String.valueOf(Configuration.get().getROU_LO()))
             ) < 0)
                     && (conformation.getEnergy() < mins.get(i).getEnergy())) {
                 mins.set(i, conformation);

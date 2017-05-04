@@ -1,5 +1,7 @@
 package com.cluster.math;
 
+import com.cluster.Configuration;
+import com.cluster.StronginTask;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Interval;
 import com.cluster.math.utils.Efficiency;
@@ -15,13 +17,14 @@ import java.util.ArrayList;
  */
 public class Strongin {
     private static final long m = 150;
-    public static final BigDecimal log2 = BigDecimalMath.log(new BigDecimal(2).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE()));
+    public static final BigDecimal log2 = BigDecimalMath.log(new BigDecimal(2).setScale(Configuration.get().getBIG_DECIMAL_SCALE()));
     private ArrayList<Interval> intervals;
     private MinsRepository rep;
     private int iterations;
     private int sizeMins;
     private Bits b;
     private Bits a;
+    private StronginTask.ProgressCallBack progressCallBack;
 
     private Strongin() {
     }
@@ -34,15 +37,17 @@ public class Strongin {
     }
 
     public static double calcF(BigInteger a, BigInteger b, double zA, double zB) {
-        double logA = BigDecimalMath.log(new BigDecimal(a).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
-        double logB = BigDecimalMath.log(new BigDecimal(b).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
+        double logA = BigDecimalMath.log(new BigDecimal(a).setScale(Configuration.get().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
+        double logB = BigDecimalMath.log(new BigDecimal(b).setScale(Configuration.get().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
         return m * (logB - logA) + (Math.pow(zB - zA, 2) / (m * (logB - logA))) - 2 * (zA + zB);
     }
 
-    public MinsRepository solve() {
+    public MinsRepository solve(StronginTask.ProgressCallBack progressCallBack) {
         if ((a == null) || (b == null) || (iterations <= 0) || (sizeMins <= 0)) {
             throw new IllegalArgumentException("Strongin params not exist");
         }
+
+        this.progressCallBack = progressCallBack;
         return solve(a, b, iterations, sizeMins);
     }
 
@@ -60,18 +65,21 @@ public class Strongin {
         Bits cacheB = null;
         Efficiency cacheZB = null;
         for (int i = 0; i < iterations; i++) {
-            if (i % 100 == 0) {
-                System.out.println("Strongin " + i);
+            if (i % 10 == 0) {
+                if (progressCallBack != null) {
+                    progressCallBack.onProgress(i * 100 / iterations);
+                }
             }
+
             interval = intervals.get(ind);
-            double logA = BigDecimalMath.log(new BigDecimal(interval.getA().getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
-            double logB = BigDecimalMath.log(new BigDecimal(interval.getB().getNumber()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
-            BigInteger x = new BigDecimal(interval.getB().getNumber().add(interval.getA().getNumber())).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE()).divide(new BigDecimal(2)).setScale(0, BigDecimal.ROUND_HALF_UP).toBigInteger(); //Math.ceil(Math.pow(2, (logA + logB) / 2.0));
-            bitsX = new Bits(TestExecutor.getConfig().getSTRONGIN_M(), x);
+            double logA = BigDecimalMath.log(new BigDecimal(interval.getA().getNumber()).setScale(Configuration.get().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
+            double logB = BigDecimalMath.log(new BigDecimal(interval.getB().getNumber()).setScale(Configuration.get().getBIG_DECIMAL_SCALE())).divide(log2, RoundingMode.HALF_UP).doubleValue();
+            BigInteger x = new BigDecimal(interval.getB().getNumber().add(interval.getA().getNumber())).setScale(Configuration.get().getBIG_DECIMAL_SCALE()).divide(new BigDecimal(2)).setScale(0, BigDecimal.ROUND_HALF_UP).toBigInteger(); //Math.ceil(Math.pow(2, (logA + logB) / 2.0));
+            bitsX = new Bits(Configuration.get().getSTRONGIN_M(), x);
             zX = new Efficiency(rep, bitsX);
             isUsed = false;
 
-            double logSize = BigDecimalMath.log(new BigDecimal(TestExecutor.getConfig().getSTRONGIN_EPS()).setScale(TestExecutor.getConfig().getBIG_DECIMAL_SCALE()).divide(new BigDecimal(interval.getA().getNumber()), RoundingMode.HALF_UP).add(BigDecimal.ONE)).divide(log2, RoundingMode.HALF_UP).doubleValue();
+            double logSize = BigDecimalMath.log(new BigDecimal(Configuration.get().getSTRONGIN_EPS()).setScale(Configuration.get().getBIG_DECIMAL_SCALE()).divide(new BigDecimal(interval.getA().getNumber()), RoundingMode.HALF_UP).add(BigDecimal.ONE)).divide(log2, RoundingMode.HALF_UP).doubleValue();
             if ((logB - logA) / 2.0 < logSize) { //todo check
                 intervals.remove(ind);
             } else {
