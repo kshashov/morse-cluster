@@ -34,7 +34,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(root, WIDTH, HEIGHT);
 
         stage.setMinHeight(HEIGHT);
-        stage.setMinWidth(WIDTH);
+        stage.setMinWidth(WIDTH - 500);
         stage.setTitle("Morse Cluster Solver");
         stage.setScene(scene);
         stage.show();

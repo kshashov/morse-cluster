@@ -3,23 +3,38 @@ package com.cluster;
 import com.cluster.math.Strongin;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 /**
  * Created by envoy on 02.05.2017.
  */
-public class StronginTask implements Callable<Strongin> {
-    private final ProgressCallBack progressCallBack;
-    private final Strongin strongin;
+public class StronginTask extends FutureTask<Strongin> {
+    private ProgressCallBack progressCallBack;
 
     public StronginTask(Strongin strongin, ProgressCallBack progressCallBack) {
-        this.strongin = strongin;
+        super(new StronginCallable(strongin, progressCallBack));
         this.progressCallBack = progressCallBack;
     }
 
-    @Override
-    public Strongin call() throws Exception {
-        strongin.solve(progressCallBack);
-        return strongin;
+    public ProgressCallBack getProgressCallBack() {
+        return progressCallBack;
+    }
+
+    public static class StronginCallable implements Callable<Strongin> {
+        private final ProgressCallBack progressCallBack;
+        private final Strongin strongin;
+
+        public StronginCallable(Strongin strongin, ProgressCallBack progressCallBack) {
+            this.strongin = strongin;
+            this.progressCallBack = progressCallBack;
+        }
+
+        @Override
+        public Strongin call() throws Exception {
+            progressCallBack.onProgress(0);
+            strongin.solve(progressCallBack);
+            return strongin;
+        }
     }
 
     public static abstract class ProgressCallBack implements Cloneable {
@@ -37,6 +52,8 @@ public class StronginTask implements Callable<Strongin> {
         }
 
         public abstract void onProgress(int percent);
+
+        public abstract void onFinish(int percent);
 
         public ProgressCallBack clone() {
             try {

@@ -27,9 +27,6 @@
             </children>
         </VBox>
     </top>
-    <bottom>
-        <HBox fx:id="processHBox" alignment="CENTER" BorderPane.alignment="CENTER"/>
-    </bottom>
     <left>
     </left>
     <center>
@@ -67,69 +64,78 @@
                                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                               AnchorPane.topAnchor="0.0">
                                             <children>
-                                                <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0"
-                                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                      AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                                                <VBox>
                                                     <children>
-                                                        <TextField fx:id="summaryBits" alignment="BOTTOM_LEFT"
-                                                                   editable="false" text="--" HBox.hgrow="ALWAYS"/>
-                                                        <Button fx:id="graphBtn" mnemonicParsing="false" text="График"/>
-                                                    </children>
-                                                    <padding>
-                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                                                    </padding>
-                                                </HBox>
+                                                        <HBox fillHeight="false" spacing="5.0" VBox.vgrow="ALWAYS">
+                                                            <children>
+                                                                <TextField fx:id="summaryBits" alignment="BOTTOM_LEFT"
+                                                                           editable="false" text="--"
+                                                                           HBox.hgrow="ALWAYS"/>
+                                                                <Button fx:id="graphBtn" mnemonicParsing="false"
+                                                                        text="График"/>
+                                                            </children>
+                                                            <padding>
+                                                                <Insets left="5.0" right="5.0" top="5.0"/>
+                                                            </padding>
+                                                        </HBox>
 
-                                                <GridPane hgap="1.0" vgap="1.0" VBox.vgrow="NEVER">
-                                                    <columnConstraints>
-                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
-                                                                           prefWidth="100.0"/>
-                                                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"
-                                                                           prefWidth="100.0"/>
-                                                    </columnConstraints>
-                                                    <rowConstraints>
-                                                        <RowConstraints vgrow="SOMETIMES"/>
-                                                        <RowConstraints vgrow="SOMETIMES"/>
-                                                        <RowConstraints vgrow="SOMETIMES"/>
-                                                    </rowConstraints>
-                                                    <children>
-                                                        <Label contentDisplay="CENTER" style="-fx-font-weight: bold;"
-                                                               text="Размер:" textAlignment="RIGHT"
-                                                               GridPane.hgrow="NEVER" GridPane.vgrow="NEVER"/>
-                                                        <Label contentDisplay="CENTER" prefWidth="28.0"
-                                                               style="-fx-font-weight: bold;" text="P:"
-                                                               textAlignment="RIGHT" GridPane.hgrow="NEVER"
-                                                               GridPane.rowIndex="1" GridPane.vgrow="NEVER"/>
-                                                        <Label contentDisplay="CENTER" style="-fx-font-weight: bold;"
-                                                               text="Энергия:" textAlignment="RIGHT"
-                                                               GridPane.hgrow="NEVER" GridPane.rowIndex="2"
-                                                               GridPane.vgrow="NEVER"/>
-                                                        <Label fx:id="summarySize" text="--" GridPane.columnIndex="1">
-                                                            <GridPane.margin>
+                                                        <GridPane hgap="1.0" vgap="1.0" VBox.vgrow="NEVER">
+                                                            <columnConstraints>
+                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+                                                                                   prefWidth="100.0"/>
+                                                                <ColumnConstraints hgrow="ALWAYS" minWidth="10.0"
+                                                                                   prefWidth="100.0"/>
+                                                            </columnConstraints>
+                                                            <rowConstraints>
+                                                                <RowConstraints vgrow="SOMETIMES"/>
+                                                                <RowConstraints vgrow="SOMETIMES"/>
+                                                                <RowConstraints vgrow="SOMETIMES"/>
+                                                            </rowConstraints>
+                                                            <children>
+                                                                <Label contentDisplay="CENTER"
+                                                                       style="-fx-font-weight: bold;" text="Размер:"
+                                                                       textAlignment="RIGHT" GridPane.hgrow="NEVER"
+                                                                       GridPane.vgrow="NEVER"/>
+                                                                <Label contentDisplay="CENTER" prefWidth="28.0"
+                                                                       style="-fx-font-weight: bold;" text="P:"
+                                                                       textAlignment="RIGHT" GridPane.hgrow="NEVER"
+                                                                       GridPane.rowIndex="1" GridPane.vgrow="NEVER"/>
+                                                                <Label contentDisplay="CENTER"
+                                                                       style="-fx-font-weight: bold;" text="Энергия:"
+                                                                       textAlignment="RIGHT" GridPane.hgrow="NEVER"
+                                                                       GridPane.rowIndex="2" GridPane.vgrow="NEVER"/>
+                                                                <Label fx:id="summarySize" text="--"
+                                                                       GridPane.columnIndex="1">
+                                                                    <GridPane.margin>
+                                                                        <Insets/>
+                                                                    </GridPane.margin>
+                                                                </Label>
+                                                                <Label fx:id="summaryP" text="--"
+                                                                       GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                                    <GridPane.margin>
+                                                                        <Insets/>
+                                                                    </GridPane.margin>
+                                                                </Label>
+                                                                <TextField fx:id="summaryEnergy" editable="false"
+                                                                           text="--" GridPane.columnIndex="1"
+                                                                           GridPane.rowIndex="2">
+                                                                    <GridPane.margin>
+                                                                        <Insets/>
+                                                                    </GridPane.margin>
+                                                                </TextField>
+                                                            </children>
+                                                            <VBox.margin>
+                                                                <Insets bottom="10.0" left="20.0" right="20.0"
+                                                                        top="10.0"/>
+                                                            </VBox.margin>
+                                                            <opaqueInsets>
                                                                 <Insets/>
-                                                            </GridPane.margin>
-                                                        </Label>
-                                                        <Label fx:id="summaryP" text="--" GridPane.columnIndex="1"
-                                                               GridPane.rowIndex="1">
-                                                            <GridPane.margin>
-                                                                <Insets/>
-                                                            </GridPane.margin>
-                                                        </Label>
-                                                        <TextField fx:id="summaryEnergy" editable="false" text="--"
-                                                                   GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                            <GridPane.margin>
-                                                                <Insets/>
-                                                            </GridPane.margin>
-                                                        </TextField>
+                                                            </opaqueInsets>
+                                                        </GridPane>
                                                     </children>
-                                                    <VBox.margin>
-                                                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
-                                                    </VBox.margin>
-                                                    <opaqueInsets>
-                                                        <Insets/>
-                                                    </opaqueInsets>
-                                                </GridPane>
-                                                <TableView fx:id="summaryVerticesTable" VBox.vgrow="ALWAYS"/>
+                                                </VBox>
+                                                <TableView fx:id="summaryVerticesTable" prefHeight="467.0"
+                                                           prefWidth="390.0" VBox.vgrow="ALWAYS"/>
                                             </children>
                                         </VBox>
                                     </children>
@@ -141,4 +147,16 @@
             </items>
         </SplitPane>
     </center>
+    <bottom>
+        <ScrollPane fitToHeight="true" minHeight="0.0" vbarPolicy="NEVER" BorderPane.alignment="TOP_LEFT">
+            <content>
+                <AnchorPane>
+                    <children>
+                        <HBox fx:id="processHBox" alignment="CENTER" fillHeight="false" AnchorPane.bottomAnchor="0.0"
+                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </bottom>
 </BorderPane>

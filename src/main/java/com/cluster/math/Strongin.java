@@ -64,10 +64,11 @@ public class Strongin {
         boolean isUsed = false;
         Bits cacheB = null;
         Efficiency cacheZB = null;
+        int progressDelta = 2 * iterations / 100;
         for (int i = 0; i < iterations; i++) {
-            if (i % 10 == 0) {
+            if (i % progressDelta == 0) {
                 if (progressCallBack != null) {
-                    progressCallBack.onProgress(i * 100 / iterations);
+                    progressCallBack.onProgress(Math.min(i * 100 / iterations, 99));
                 }
             }
 

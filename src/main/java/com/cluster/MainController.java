@@ -115,17 +115,53 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
             @Override
             public void handle(ActionEvent event) {
                 onStart();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            ExecutorService.init(MainApp.args);
 
-                try {
-                    ExecutorService.init(MainApp.args);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    showFinishMsg(ERROR_IO, true);
-                    return;
-                }
+                            StronginTask.ProgressCallBack progressCallBack = initProgressCallBack();
 
+                            ExecutorService.process(progressCallBack, new ExecutorService.OnFinishCallBack() {
+                                @Override
+                                public void onFinish(List<Conformation> results, long milliseconds) {
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            addConformations(results);
+                                            showFinishMsg(INFO_FINISH + (milliseconds / 1000) + " c.", false);
+                                        }
+                                    });
+                                }
+                            });
 
-                ArrayList<ProgressIndicator> indicators = new ArrayList<>();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                            showFinishMsg(ERROR_WTF, true);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            showFinishMsg(ERROR_WTF, true);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                            showFinishMsg(ERROR_IO + " при сохранении результатов", true);
+                            return;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            showFinishMsg(ERROR_IO, true);
+                        }
+                    }
+                }).start();
+            }
+        });
+    }
+
+    private StronginTask.ProgressCallBack initProgressCallBack() {
+        ArrayList<ProgressIndicator> indicators = new ArrayList<>();
+        ProgressIndicator finishIndicator = new ProgressIndicator(0);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
                 processHBox.getChildren().clear();
                 for (int i = 0; i < Configuration.get().getTHREADS_COUNT(); i++) {
                     VBox vBox = new VBox();
@@ -136,51 +172,31 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
                     processHBox.getChildren().add(vBox);
                 }
 
-                StronginTask.ProgressCallBack progressCallBack = new StronginTask.ProgressCallBack() {
-                    @Override
-                    public void onProgress(int percent) {
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                indicators.get(getId()).setProgress(percent / 100.0);
-                            }
-                        });
-                    }
-                };
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            ExecutorService.process(progressCallBack, new ExecutorService.OnFinishCallBack() {
-                                @Override
-                                public void onFinish(List<Conformation> results, long milliseconds) {
-                                    //TODO alert
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            addConformations(results);
-                                            showFinishMsg(INFO_FINISH + (milliseconds / 1000) + " c.", false);
-                                        }
-                                    });
-                                }
-                            });
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                            showFinishMsg(ERROR_WTF, true);
-                            return;
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            showFinishMsg(ERROR_WTF, true);
-                            return;
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            showFinishMsg(ERROR_IO + " при сохранении результатов", true);
-                            return;
-                        }
-                    }
-                }).start();
+                VBox vBox = new VBox();
+                vBox.setAlignment(Pos.CENTER);
+                vBox.setPadding(new Insets(10));
+                vBox.getChildren().addAll(new Label("Обработка"), finishIndicator);
+                processHBox.getChildren().addAll(vBox);
             }
         });
+
+        StronginTask.ProgressCallBack progressCallBack = new StronginTask.ProgressCallBack() {
+            @Override
+            public void onProgress(int percent) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        indicators.get(getId()).setProgress(percent / 100.0);
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish(int percent) {
+                finishIndicator.setProgress(percent / 100.0);
+            }
+        };
+        return progressCallBack;
     }
 
     private void addConformations(Collection<Conformation> conformations) {

@@ -13,7 +13,6 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.FutureTask;
 
 /**
  * Created by envoy on 05.03.2017.
@@ -29,7 +28,7 @@ public class ExecutorService {
         String logPath = userDir + DEFAULT_LOG;
 
         if (args.length > 0) {
-            configPath = args[0];
+            configPath = args[0].replace("\\", "\\\\");
         }
 
         log = new PrintStream(new File(logPath));
@@ -56,7 +55,7 @@ public class ExecutorService {
         Bits b = new Bits(new StringBuilder(stronginOnes).append(stronginZeros));
 
         java.util.concurrent.ExecutorService executor = Executors.newFixedThreadPool(Configuration.get().getTHREADS_COUNT());
-        ArrayList<FutureTask<Strongin>> tasks = new ArrayList<>(Configuration.get().getTHREADS_COUNT());
+        ArrayList<StronginTask> tasks = new ArrayList<>(Configuration.get().getTHREADS_COUNT());
         ArrayList<BigInteger> points = new ArrayList<>(Configuration.get().getTHREADS_COUNT() + 1);
         points.add(a.getNumber());
         for (int i = 0; i < Configuration.get().getTHREADS_COUNT() - 1; i++) {
@@ -67,12 +66,12 @@ public class ExecutorService {
             Strongin strongin = new Strongin(new Bits(Configuration.get().getSTRONGIN_M(), points.get(i)), new Bits(Configuration.get().getSTRONGIN_M(), points.get(i + 1)), Configuration.get().getSTRONGIN_ITERATIONS(), Configuration.get().getSTRONGIN_REPOSITORY_SIZE());
             StronginTask.ProgressCallBack progressCallBack1 = progressCallBack.clone();
             progressCallBack1.setId(i);
-            FutureTask<Strongin> task = new FutureTask<Strongin>(new StronginTask(strongin, progressCallBack1));
+            StronginTask task = new StronginTask(strongin, progressCallBack1);
             tasks.add(task);
             executor.execute(task);
         }
         Map<String, Conformation> output = new HashMap<>();
-        for (FutureTask<Strongin> task : tasks) {
+        for (StronginTask task : tasks) {
             Strongin strongin = task.get();
             String temp;
             for (Conformation variant : strongin.getRep().getMins()) {
@@ -86,14 +85,15 @@ public class ExecutorService {
                 }
             }
             logIntervals(strongin);
+            task.getProgressCallBack().onProgress(100);
         }
-
+        progressCallBack.onFinish(10);
         executor.shutdown();
         ExecutorService.log.close();
-        finishCallback.onFinish(saveResults(output), System.currentTimeMillis() - time);
+        finishCallback.onFinish(saveResults(output, progressCallBack), System.currentTimeMillis() - time);
     }
 
-    private static List<Conformation> saveResults(Map<String, Conformation> map) throws FileNotFoundException {
+    private static List<Conformation> saveResults(Map<String, Conformation> map, StronginTask.ProgressCallBack progressCallBack) throws FileNotFoundException {
         List<Conformation> output = new ArrayList<>();
 
         File directory = new File(Configuration.get().getOUTPUT_FOLDERNAME());
@@ -101,14 +101,10 @@ public class ExecutorService {
             directory.mkdir();
         }
 
-        Conformation opt;
-        int i = 1;
         for (Conformation conformation : map.values()) {
-            opt = ClusterMath.calc(conformation.getBits().getBites().toString(), true);
-            saveConformation(directory, opt, "[" + (i++) + "]");
-            output.add(opt);
+            output.add(ClusterMath.calc(conformation.getBits().getBites().toString(), true));
         }
-
+        progressCallBack.onFinish(50);
         output.sort(new Comparator<Conformation>() {
             @Override
             public int compare(Conformation left, Conformation right) {
@@ -118,8 +114,13 @@ public class ExecutorService {
                 return left.getEnergy() > right.getEnergy() ? 1 : -1;
             }
         });
-
-        return output.subList(0, Math.min(output.size(), Configuration.get().getMINS_COUNT()));
+        List<Conformation> mins = output.subList(0, Math.min(output.size(), Configuration.get().getMINS_COUNT()));
+        int i = 1;
+        for (Conformation conformation : mins) {
+            saveConformation(directory, conformation, "[" + (i++) + "]");
+            progressCallBack.onFinish(50 + 50 * ((i - 1) / mins.size()));
+        }
+        return mins;
     }
 
 
