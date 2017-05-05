@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <BorderPane minHeight="100.0" minWidth="600.0" prefHeight="500.0" prefWidth="700.0"
-            xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.cluster.MainController">
     <top>
         <VBox BorderPane.alignment="CENTER">
@@ -13,13 +13,13 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="Задача">
                             <items>
-                                <MenuItem mnemonicParsing="false" fx:id="processMenuItem" text="Рассчитать"/>
-                                <MenuItem mnemonicParsing="false" fx:id="exitMenuItem" text="Выход"/>
+                                <MenuItem fx:id="processMenuItem" mnemonicParsing="false" text="Расчет"/>
+                                <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Выход"/>
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Помощь">
                             <items>
-                                <MenuItem mnemonicParsing="false" fx:id="aboutMenuItem" text="Справка"/>
+                                <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="Справка"/>
                             </items>
                         </Menu>
                     </menus>
@@ -67,6 +67,19 @@
                                               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                                               AnchorPane.topAnchor="0.0">
                                             <children>
+                                                <HBox spacing="5.0" AnchorPane.bottomAnchor="0.0"
+                                                      AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                                      AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                                                    <children>
+                                                        <TextField fx:id="summaryBits" alignment="BOTTOM_LEFT"
+                                                                   editable="false" text="--" HBox.hgrow="ALWAYS"/>
+                                                        <Button fx:id="graphBtn" mnemonicParsing="false" text="График"/>
+                                                    </children>
+                                                    <padding>
+                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                                    </padding>
+                                                </HBox>
+
                                                 <GridPane hgap="1.0" vgap="1.0" VBox.vgrow="NEVER">
                                                     <columnConstraints>
                                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
@@ -78,42 +91,32 @@
                                                         <RowConstraints vgrow="SOMETIMES"/>
                                                         <RowConstraints vgrow="SOMETIMES"/>
                                                         <RowConstraints vgrow="SOMETIMES"/>
-                                                        <RowConstraints vgrow="SOMETIMES"/>
                                                     </rowConstraints>
                                                     <children>
-                                                        <TextField fx:id="summaryBits" alignment="BOTTOM_LEFT"
-                                                                   editable="false" text="sdf" GridPane.columnIndex="0"
-                                                                   GridPane.columnSpan="2" GridPane.rowIndex="0">
-                                                            <GridPane.margin>
-                                                                <Insets bottom="5.0" top="5.0"/>
-                                                            </GridPane.margin>
-                                                        </TextField>
                                                         <Label contentDisplay="CENTER" style="-fx-font-weight: bold;"
                                                                text="Размер:" textAlignment="RIGHT"
-                                                               GridPane.hgrow="NEVER" GridPane.rowIndex="1"
-                                                               GridPane.vgrow="NEVER"/>
+                                                               GridPane.hgrow="NEVER" GridPane.vgrow="NEVER"/>
                                                         <Label contentDisplay="CENTER" prefWidth="28.0"
                                                                style="-fx-font-weight: bold;" text="P:"
                                                                textAlignment="RIGHT" GridPane.hgrow="NEVER"
-                                                               GridPane.rowIndex="2" GridPane.vgrow="NEVER"/>
+                                                               GridPane.rowIndex="1" GridPane.vgrow="NEVER"/>
                                                         <Label contentDisplay="CENTER" style="-fx-font-weight: bold;"
                                                                text="Энергия:" textAlignment="RIGHT"
-                                                               GridPane.hgrow="NEVER" GridPane.rowIndex="3"
+                                                               GridPane.hgrow="NEVER" GridPane.rowIndex="2"
                                                                GridPane.vgrow="NEVER"/>
-                                                        <Label fx:id="summarySize" text="--" GridPane.columnIndex="1"
-                                                               GridPane.rowIndex="1">
+                                                        <Label fx:id="summarySize" text="--" GridPane.columnIndex="1">
                                                             <GridPane.margin>
                                                                 <Insets/>
                                                             </GridPane.margin>
                                                         </Label>
                                                         <Label fx:id="summaryP" text="--" GridPane.columnIndex="1"
-                                                               GridPane.rowIndex="2">
+                                                               GridPane.rowIndex="1">
                                                             <GridPane.margin>
                                                                 <Insets/>
                                                             </GridPane.margin>
                                                         </Label>
-                                                        <TextField editable="false" fx:id="summaryEnergy" text="--"
-                                                                   GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                        <TextField fx:id="summaryEnergy" editable="false" text="--"
+                                                                   GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                             <GridPane.margin>
                                                                 <Insets/>
                                                             </GridPane.margin>

@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.jzy3d.analysis.AnalysisLauncher;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -58,11 +59,15 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
     MenuItem aboutMenuItem;
     @FXML
     HBox processHBox;
+    @FXML
+    Button graphBtn;
+
     private static final String ERROR_IO = "Произошла ошибка чтения/записи";
     private static final String ERROR_WTF = "Произошла непредвиденная ошибка";
     private static final String INFO_FINISH = "Расчеты завершились успешно, потраченное время: ";
     private static final String ERROR_EXIT = "Во время расчетов работу приложения невозможно завершить";
     private static final String ABOUT = "Справочная информация";
+    private Conformation conformation;
 
     public void initialize(URL location, ResourceBundle resources) {
         initConformations();
@@ -87,7 +92,9 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
             @Override
             public void handle(ActionEvent event) {
                 Stage dialog = new Stage();
+                dialog.getIcons().addAll(MainApp.primaryStage.getIcons());
                 dialog.setTitle(ABOUT);
+                dialog.initOwner(MainApp.primaryStage);
                 WebView webView = new WebView();
                 webView.getEngine().load(getClass().getResource("/about.html").toExternalForm());
                 VBox mainVbox = new VBox(webView, new Label("(С) Коварце А.Н., Шашов К.В."), new Label("Самарский Университет, Самара, 2017"));
@@ -125,7 +132,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
                     vBox.setAlignment(Pos.CENTER);
                     vBox.setPadding(new Insets(10));
                     indicators.add(new ProgressIndicator(0));
-                    vBox.getChildren().addAll(new Label("THREAD #" + (i + 1)), indicators.get(i));
+                    vBox.getChildren().addAll(new Label("Поток #" + (i + 1)), indicators.get(i));
                     processHBox.getChildren().add(vBox);
                 }
 
@@ -136,7 +143,6 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
                             @Override
                             public void run() {
                                 indicators.get(getId()).setProgress(percent / 100.0);
-                                System.out.println("THREAD" + getId() + ": " + percent);
                             }
                         });
                     }
@@ -183,6 +189,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
     }
 
     private void showSummary(Conformation conformation) {
+        this.conformation = conformation;
         summaryEnergy.setText(String.valueOf(conformation.getEnergy()));
         summaryP.setText(String.valueOf(Configuration.get().getRO()));
         summarySize.setText(String.valueOf(Configuration.get().getN()));
@@ -233,6 +240,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
 
     private void showFinishMsg(String s, boolean isError) {
         Alert alert = new Alert(isError ? Alert.AlertType.ERROR : Alert.AlertType.INFORMATION);
+        alert.initOwner(MainApp.primaryStage);
         alert.setTitle(isError ? "Ошибка" : "Информация");
         alert.setHeaderText(null);
         alert.setContentText(s);
@@ -286,12 +294,25 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
         summaryBits.setText("--");
         // enable copy/paste
         TableUtils.installCopyPasteHandler(summaryVerticesTable);
+        graphBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (conformation != null) {
+                    try {
+                        AnalysisLauncher.open(new Graph(conformation.getVertices()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void handle(WindowEvent event) {
         if (processMenuItem.isDisable()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(MainApp.primaryStage);
             alert.setTitle("Предупреждение");
             alert.setHeaderText(null);
             alert.setContentText(ERROR_EXIT);

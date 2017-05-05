@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,12 +25,14 @@ public class MainApp extends Application {
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("/main.fxml"));
+            stage.getIcons().add(new Image(getClass().getResource("/icon.png").toExternalForm()));
         } catch (IOException e) {
             e.printStackTrace();
         }
         setUserAgentStylesheet(STYLESHEET_MODENA);
 
         Scene scene = new Scene(root, WIDTH, HEIGHT);
+
         stage.setMinHeight(HEIGHT);
         stage.setMinWidth(WIDTH);
         stage.setTitle("Morse Cluster Solver");

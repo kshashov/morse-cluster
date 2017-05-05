@@ -46,7 +46,7 @@ public class GrowthAlg {
         int itersMin = 1;
         if (iterations > 0) {
             itersMin = (temp.size() < iterations) ? temp.size() : iterations;
-            iterations -= itersMin;
+            iterations /= itersMin;
         }
 
         for (int i = 0; i < itersMin; i++) {
