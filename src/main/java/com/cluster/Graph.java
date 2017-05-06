@@ -8,6 +8,7 @@ import org.jzy3d.chart.factories.AWTChartComponentFactory;
 import org.jzy3d.colors.Color;
 import org.jzy3d.maths.BoundingBox3d;
 import org.jzy3d.maths.Coord3d;
+import org.jzy3d.maths.Scale;
 import org.jzy3d.plot3d.primitives.Sphere;
 import org.jzy3d.plot3d.rendering.canvas.Quality;
 
@@ -34,6 +35,7 @@ public class Graph extends AbstractAnalysis {
             chart.getScene().getGraph().add(sphere);
             bounds.add(sphere.getBounds());
         }
+        chart.setScale(new Scale(bounds.getZmin(), bounds.getZmax()));
         // Create a chart
         float dist1 = 3;
         float dist = 10;

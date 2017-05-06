@@ -126,28 +126,22 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
                             ExecutorService.process(progressCallBack, new ExecutorService.OnFinishCallBack() {
                                 @Override
                                 public void onFinish(List<Conformation> results, long milliseconds) {
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            addConformations(results);
-                                            showFinishMsg(INFO_FINISH + (milliseconds / 1000) + " c.", false);
-                                        }
-                                    });
+                                    addConformations(results);
+                                    showFinishMsg(INFO_FINISH + (milliseconds / 1000) + " c.", false);
                                 }
                             });
 
                         } catch (ExecutionException e) {
-                            e.printStackTrace();
+                            ExecutorService.logError(e);
                             showFinishMsg(ERROR_WTF, true);
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            ExecutorService.logError(e);
                             showFinishMsg(ERROR_WTF, true);
                         } catch (FileNotFoundException e) {
-                            e.printStackTrace();
+                            ExecutorService.logError(e);
                             showFinishMsg(ERROR_IO + " при сохранении результатов", true);
-                            return;
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            ExecutorService.logError(e);
                             showFinishMsg(ERROR_IO, true);
                         }
                     }
@@ -200,8 +194,13 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
     }
 
     private void addConformations(Collection<Conformation> conformations) {
-        decisionsTable.getItems().addAll(conformations);
-        decisionsTable.refresh();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                decisionsTable.getItems().addAll(conformations);
+                decisionsTable.refresh();
+            }
+        });
     }
 
     private void showSummary(Conformation conformation) {
@@ -243,30 +242,45 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
     }
 
     private void onStart() {
-        //TODO disable and clear old
-        processMenuItem.setDisable(true);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                processMenuItem.setDisable(true);
 
-        if (decisionsTable.getItems() != null) {
-            decisionsTable.getItems().clear();
-            decisionsTable.refresh();
-        }
+                if (decisionsTable.getItems() != null) {
+                    decisionsTable.getItems().clear();
+                    decisionsTable.refresh();
+                }
 
-        processHBox.setVisible(true);
+                processHBox.setVisible(true);
+            }
+        });
+
     }
 
     private void showFinishMsg(String s, boolean isError) {
-        Alert alert = new Alert(isError ? Alert.AlertType.ERROR : Alert.AlertType.INFORMATION);
-        alert.initOwner(MainApp.primaryStage);
-        alert.setTitle(isError ? "Ошибка" : "Информация");
-        alert.setHeaderText(null);
-        alert.setContentText(s);
-        alert.show();
-        onFinish();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Alert alert = new Alert(isError ? Alert.AlertType.ERROR : Alert.AlertType.INFORMATION);
+                alert.initOwner(MainApp.primaryStage);
+                alert.setTitle(isError ? "Ошибка" : "Информация");
+                alert.setHeaderText(null);
+                alert.setContentText(s);
+                alert.show();
+                onFinish();
+            }
+        });
     }
 
     private void onFinish() {
-        processMenuItem.setDisable(false);
-        processHBox.getChildren().clear();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                processMenuItem.setDisable(false);
+                processHBox.getChildren().clear();
+            }
+        });
     }
 
     private void initSummary() {
@@ -327,13 +341,19 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
     @Override
     public void handle(WindowEvent event) {
         if (processMenuItem.isDisable()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.initOwner(MainApp.primaryStage);
-            alert.setTitle("Предупреждение");
-            alert.setHeaderText(null);
-            alert.setContentText(ERROR_EXIT);
-            alert.show();
-            event.consume();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.initOwner(MainApp.primaryStage);
+                    alert.setTitle("Предупреждение");
+                    alert.setHeaderText(null);
+                    alert.setContentText(ERROR_EXIT);
+                    alert.show();
+                    event.consume();
+                }
+            });
+
         }
     }
 }

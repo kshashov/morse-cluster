@@ -21,18 +21,32 @@ public class ExecutorService {
     private static PrintStream log;
     private static String DEFAULT_CONFIG = "config.json";
     private static String DEFAULT_LOG = "log.txt";
+    private static String DEFAULT_INPUT = "input.txt";
+    private static String DEFAULT_OUTPUT = "output";
+
+    public static PrintStream initLog() throws FileNotFoundException {
+
+        if (log == null) {
+            String userDir = System.getProperty("user.dir") + File.separator;
+            String logPath = userDir + DEFAULT_LOG;
+            log = new PrintStream(new File(logPath));
+        }
+        return log;
+    }
 
     public static Config init(String[] args) throws IOException {
         String userDir = System.getProperty("user.dir") + File.separator;
         String configPath = userDir + DEFAULT_CONFIG;
-        String logPath = userDir + DEFAULT_LOG;
+
+        String inputPath = userDir + DEFAULT_INPUT;
+        String outputPath = userDir + DEFAULT_OUTPUT;
 
         if (args.length > 0) {
             configPath = args[0].replace("\\", "\\\\");
         }
-
-        log = new PrintStream(new File(logPath));
-        Configuration.setupConfig(new BufferedReader(new FileReader(configPath)));
+        log = null;
+        initLog();
+        Configuration.setupConfig(new BufferedReader(new FileReader(configPath)), inputPath, outputPath);
         return Configuration.get();
     }
 
@@ -124,7 +138,8 @@ public class ExecutorService {
     }
 
 
-    private static void logIntervals(Strongin strongin) {
+    private static void logIntervals(Strongin strongin) throws FileNotFoundException {
+        initLog();
         strongin.getIntervals().sort(new Comparator<Interval>() {
             @Override
             public int compare(Interval left, Interval right) {
@@ -145,6 +160,18 @@ public class ExecutorService {
         out.print(conf);
         out.flush();
         out.close();
+    }
+
+    public static void logError(Exception e) {
+        try {
+            initLog();
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        }
+        if (ExecutorService.log != null) {
+            e.printStackTrace(ExecutorService.log);
+            ExecutorService.log.close();
+        }
     }
 
     public interface OnFinishCallBack {

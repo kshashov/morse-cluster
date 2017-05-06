@@ -12,13 +12,13 @@ public class Config {
     private int STRONGIN_N;  //only calculated
     private int STRONGIN_M;  //only calculated
     private int STRONGIN_K;  //or calculated
-    private int STRONGIN_ITERATIONS = 2000; //or calculated
+    private int STRONGIN_ITERATIONS; //or calculated
     private int STRONGIN_REPOSITORY_SIZE = 20;
     private double STRONGIN_EPS = 20000;
     private double DISTANCE_MIN = 1.1;
     private double RO = 14;
     private double TOP_MAX_ENERGY_DELTA = 0.05;
-    private int INF_SUP_ITERATIONS = 1000;
+    private int INF_SUP_ITERATIONS = 10;
     private int INF_ITERATIONS; //or calculated
     private int SUP_ITERATIONS; //or calculated
     private long ROU_LO = 2;
@@ -41,7 +41,7 @@ public class Config {
         }
 
         if (STRONGIN_ITERATIONS == 0) {
-            STRONGIN_ITERATIONS = 400 * STRONGIN_K + 50 * STRONGIN_M;
+            STRONGIN_ITERATIONS = 100 * STRONGIN_K + 10 * STRONGIN_M;
         }
 
         if (INF_ITERATIONS == 0) {
@@ -56,6 +56,10 @@ public class Config {
 
     public String getINPUT_FILENAME() {
         return INPUT_FILENAME;
+    }
+
+    public void setINPUT_FILENAME(String INPUT_FILENAME) {
+        this.INPUT_FILENAME = INPUT_FILENAME;
     }
 
     public int getN() {

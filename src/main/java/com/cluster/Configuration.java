@@ -23,7 +23,7 @@ public class Configuration {
         return config;
     }
 
-    public static void setupConfig(BufferedReader fileReader) throws IOException {
+    public static void setupConfig(BufferedReader fileReader, String inputPath, String outputPath) throws IOException {
         Gson gson = new Gson();
         StringBuilder sb = new StringBuilder();
         String line;
@@ -33,10 +33,22 @@ public class Configuration {
         fileReader.close();
         config = gson.fromJson(sb.toString().replace("\\", "\\\\"), Config.class);
 
+        if ((config.getINPUT_FILENAME() == null) || config.getINPUT_FILENAME().isEmpty()) {
+            config.setINPUT_FILENAME(inputPath);
+        }
+
+        if ((config.getOUTPUT_FOLDERNAME() == null) || config.getOUTPUT_FOLDERNAME().isEmpty()) {
+            config.setOUTPUT_FOLDERNAME(outputPath);
+        }
+
         ArrayList<Vertex> vertices = readVertices(new File(config.getINPUT_FILENAME()));
 
         if ((config.getSTART_CONF() == null) || (config.getSTART_CONF().isEmpty())) {
             config.setSTART_CONF(new Bits(vertices.size()).getBites().toString());
+        }
+
+        if (config.getN() <= 0) {
+            throw new IOException("N <= 0");
         }
 
         int n2 = 0;

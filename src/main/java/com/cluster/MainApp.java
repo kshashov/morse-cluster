@@ -4,6 +4,7 @@ package com.cluster;
  * Created by envoy on 07.03.2017.
  */
 
+import com.cluster.math.ExecutorService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,7 +28,8 @@ public class MainApp extends Application {
             root = FXMLLoader.load(getClass().getResource("/main.fxml"));
             stage.getIcons().add(new Image(getClass().getResource("/icon.png").toExternalForm()));
         } catch (IOException e) {
-            e.printStackTrace();
+            ExecutorService.logError(e);
+            ;
         }
         setUserAgentStylesheet(STYLESHEET_MODENA);
 
