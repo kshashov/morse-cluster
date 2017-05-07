@@ -87,14 +87,14 @@ public class ExecutorService {
         Map<String, Conformation> output = new HashMap<>();
         for (StronginTask task : tasks) {
             Strongin strongin = task.get();
-            String temp;
+            String key;
             for (Conformation variant : strongin.getRep().getMins()) {
-                temp = variant.getBits().toString();
-                if (!output.containsKey(temp)) {
-                    output.put(temp, variant);
+                key = variant.getBits().getBites().toString();
+                if (!output.containsKey(key)) {
+                    output.put(key, variant);
                 } else {
-                    if (variant.getEnergy() < output.get(temp).getEnergy()) {
-                        output.put(temp, variant);
+                    if (variant.getEnergy() < output.get(key).getEnergy()) {
+                        output.put(key, variant);
                     }
                 }
             }

@@ -205,6 +205,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
 
     private void showSummary(Conformation conformation) {
         this.conformation = conformation;
+        graphBtn.setDisable(false);
         summaryEnergy.setText(String.valueOf(conformation.getEnergy()));
         summaryP.setText(String.valueOf(Configuration.get().getRO()));
         summarySize.setText(String.valueOf(Configuration.get().getN()));
@@ -336,6 +337,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
                 }
             }
         });
+        graphBtn.setDisable(true);
     }
 
     @Override

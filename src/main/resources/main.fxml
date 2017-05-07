@@ -13,7 +13,8 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="Задача">
                             <items>
-                                <MenuItem fx:id="processMenuItem" mnemonicParsing="false" text="Расчет"/>
+                                <MenuItem fx:id="processMenuItem" accelerator="Ctrl+N" mnemonicParsing="false"
+                                          text="Расчет"/>
                                 <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Выход"/>
                             </items>
                         </Menu>
