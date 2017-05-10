@@ -31,7 +31,11 @@ public class Configuration {
             sb.append(line).append("\n");
         }
         fileReader.close();
-        config = gson.fromJson(sb.toString().replace("\\", "\\\\"), Config.class);
+        try {
+            config = gson.fromJson(sb.toString().replace("\\", "\\\\"), Config.class);
+        } catch (Exception e) {
+            throw new IOException("Config.ini cannot be parsed");
+        }
 
         if ((config.getINPUT_FILENAME() == null) || config.getINPUT_FILENAME().isEmpty()) {
             config.setINPUT_FILENAME(inputPath);

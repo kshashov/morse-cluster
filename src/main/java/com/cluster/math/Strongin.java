@@ -4,6 +4,7 @@ import com.cluster.Configuration;
 import com.cluster.StronginTask;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Interval;
+import com.cluster.math.utils.ClusterMath;
 import com.cluster.math.utils.Efficiency;
 import org.nevec.rjm.BigDecimalMath;
 
@@ -57,6 +58,11 @@ public class Strongin {
         intervals = new ArrayList<>(iterations);
         intervals.add(new Interval(rep, a, b));
 
+        if (a.getNumber().compareTo(b.getNumber()) == 0) {
+            rep.tryAddConf(ClusterMath.calcWithStartConf(a.getBites().toString(), true));
+            return rep;
+        }
+
         int ind = 0;
         Interval interval = null;
         Efficiency zX = null;
@@ -65,6 +71,9 @@ public class Strongin {
         Bits cacheB = null;
         Efficiency cacheZB = null;
         int progressDelta = 2 * iterations / 100;
+        if (progressDelta <= 0) {
+            progressDelta = 2;
+        }
         for (int i = 0; i < iterations; i++) {
             if (i % progressDelta == 0) {
                 if (progressCallBack != null) {
