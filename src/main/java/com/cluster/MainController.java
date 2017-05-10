@@ -343,6 +343,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
     @Override
     public void handle(WindowEvent event) {
         if (processMenuItem.isDisable()) {
+            event.consume();
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -352,7 +353,6 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
                     alert.setHeaderText(null);
                     alert.setContentText(ERROR_EXIT);
                     alert.show();
-                    event.consume();
                 }
             });
 
