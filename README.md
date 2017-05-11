@@ -13,9 +13,9 @@
 Подробная информация о всех возможных параметрах приведена в справочной информации к приложению https://envoy93.github.io/morse-cluster/src/main/resources/about.html
 
 ### Cкриншоты
-<img width = "600px" src = "https://github.com/envoy93/morse-cluster/blob/master/img/01.PNG?raw=true">
-<img width = "600px" src = "https://github.com/envoy93/morse-cluster/blob/master/img/02.PNG?raw=true">
-<img width = "600px" src = "https://github.com/envoy93/morse-cluster/blob/master/img/03.PNG?raw=true">
-<img width = "600px" src = "https://github.com/envoy93/morse-cluster/blob/master/img/04.PNG?raw=true">
-<img width = "600px" src = "https://github.com/envoy93/morse-cluster/blob/master/img/05.PNG?raw=true">
-<img width = "600px" src = "https://github.com/envoy93/morse-cluster/blob/master/img/06.PNG?raw=true">
+<img src = "https://github.com/envoy93/morse-cluster/blob/master/img/01.PNG?raw=true">
+<img src = "https://github.com/envoy93/morse-cluster/blob/master/img/02.PNG?raw=true">
+<img src = "https://github.com/envoy93/morse-cluster/blob/master/img/03.PNG?raw=true">
+<img src = "https://github.com/envoy93/morse-cluster/blob/master/img/04.PNG?raw=true">
+<img src = "https://github.com/envoy93/morse-cluster/blob/master/img/05.PNG?raw=true">
+<img src = "https://github.com/envoy93/morse-cluster/blob/master/img/06.PNG?raw=true">
