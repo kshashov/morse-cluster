@@ -10,7 +10,8 @@
 ## Cправочная информация
 Для управления параметрами алгоритма используются текстовые конфигурационные файлы формата *.json. 
 
-Подробная информация о всех возможных параметрах приведена в справочной информации к приложению https://envoy93.github.io/morse-cluster/src/main/resources/about.html
+Подробная информация о всех возможных параметрах приведена в справочной информации к приложению: 
+[https://envoy93.github.io/morse-cluster/src/main/resources/about.html](https://envoy93.github.io/morse-cluster/src/main/resources/about.html)
 
 ### Cкриншоты
 <img src = "https://github.com/envoy93/morse-cluster/blob/master/img/01.PNG?raw=true">
