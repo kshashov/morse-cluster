@@ -45,7 +45,7 @@ jfx {
     jfxAppOutputDir = "build/jfx/MorseClusterSolver"
     nativeOutputDir = "build/jfx/native"
     jfxMainAppJarName = "MorseClusterSolver.jar"
-    nativeReleaseVersion = "0.91"
+    nativeReleaseVersion = "0.92"
     vendor = 'envoy93'
     appName = "MorseClusterSolver"
 }

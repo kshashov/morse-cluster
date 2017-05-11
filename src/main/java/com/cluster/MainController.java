@@ -97,7 +97,7 @@ public class MainController implements Initializable, EventHandler<WindowEvent> 
                 dialog.initOwner(MainApp.primaryStage);
                 WebView webView = new WebView();
                 webView.getEngine().load(getClass().getResource("/about.html").toExternalForm());
-                VBox mainVbox = new VBox(webView, new Label("(С) Коварце А.Н., Шашов К.В."), new Label("Самарский Университет, Самара, 2017"));
+                VBox mainVbox = new VBox(webView, new Label("(С) Коварцев А.Н., Шашов К.В."), new Label("Самарский Университет, Самара, 2017"));
                 mainVbox.setAlignment(Pos.CENTER_LEFT);
                 mainVbox.setSpacing(5);
                 mainVbox.setPadding(new Insets(10));
