@@ -1,9 +1,8 @@
-------------------------------
-
-------------------------------
-LIB https://github.com/vinhkhuc/lbfgs4j
-
 The MIT License (MIT)
+
+Copyright (c) 2017, Kirill Shashov
+
+LIB https://github.com/vinhkhuc/lbfgs4j:
 Copyright (c) 1990, Jorge Nocedal
 Copyright (c) 2007-2010, Naoaki Okazaki
 Copyright (c) 2015 Vinh Khuc
