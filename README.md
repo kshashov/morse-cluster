@@ -3,7 +3,10 @@
 
 Приложение написано на Java. Для запуска требуется JDK v8 и выше. В релизах присутствуют версии со встроенной виртуальной машиной.
 
-[![Download MorseClusterSolver](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/mcsolver/files/latest/download)
+## Скачать
+
+[![Download MorseClusterSolver](https://sourceforge.net/sflogo.php?type=14&group_id=2849525)](https://sourceforge.net/p/mcsolver/)
+
 ## Cправочная информация
 Для управления параметрами алгоритма используются текстовые конфигурационные файлы формата *.json. 
 
