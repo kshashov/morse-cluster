@@ -8,7 +8,7 @@
 [![Download MorseClusterSolver](https://sourceforge.net/sflogo.php?type=14&group_id=2849525)](https://sourceforge.net/p/mcsolver/)
 
 ## Cправочная информация
-Для управления параметрами алгоритма используются текстовые конфигурационные файлы формата *.json. 
+Для управления параметрами алгоритма используются текстовые конфигурационные файлы формата `*.json`. 
 
 Подробная информация о всех возможных параметрах приведена в справочной информации к приложению: 
 [https://envoy93.github.io/morse-cluster/src/main/resources/about.html](https://envoy93.github.io/morse-cluster/src/main/resources/about.html)
