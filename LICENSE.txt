@@ -1,12 +1,6 @@
 MIT License
 
-Copyright (c) 2017, Kirill Shashov
-
-lbfgs4j:
-https://github.com/vinhkhuc/lbfgs4j:
-Copyright (c) 1990, Jorge Nocedal
-Copyright (c) 2007-2010, Naoaki Okazaki
-Copyright (c) 2015 Vinh Khuc
+Copyright (c) 2017 Kirill Shashov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
