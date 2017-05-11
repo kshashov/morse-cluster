@@ -19,8 +19,8 @@ apply plugin: 'java'
         compileTestJava
 ]*.options*.encoding = 'UTF-8'
 
-compileJava.options.fork = true
-compileJava.options.forkOptions.executable = 'C:/Program Files (x86)/Java/jdk1.8.0_131/bin/javac'
+//compileJava.options.fork = true
+//compileJava.options.forkOptions.executable = 'C:/Program Files (x86)/Java/jdk1.8.0_131/bin/javac'
 
 repositories {
     mavenLocal()
@@ -42,27 +42,22 @@ apply plugin: 'javafx-gradle-plugin'
 
 jfx {
     mainClass = 'com.cluster.MainApp'
-    jfxAppOutputDir = "build/jfx/MorseClusterSolverApp"
+    jfxAppOutputDir = "build/jfx/MorseClusterSolver"
     nativeOutputDir = "build/jfx/native"
     jfxMainAppJarName = "MorseClusterSolver.jar"
+    nativeReleaseVersion = "0.91"
     vendor = 'envoy93'
     appName = "MorseClusterSolver"
 }
 
 task copyEndpointLib(type: Copy) {
-    from '/'
+    from './'
     include('config.json')
     include('input.txt')
-    into './build/jfx/app'
+    into './build/jfx/MorseClusterSolver'
 }
+jfxJar {}.dependsOn copyEndpointLib
 
-task copyIcon(type: Copy) {
-    from './src/main/resources/icon.png'
-    into './build/jfx/native/MorseClusterSolver'
-    rename('./build/jfx/native/MorseClusterSolver/icon.png', '/build/jfx/native/MorseClusterSolver/MorseClusterSolver.ico')
-}
-
-jfxNative {}.dependsOn copyEndpointLib
 
 dependencies {
 
