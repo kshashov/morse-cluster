@@ -22,6 +22,7 @@ public class ClusterMath {
         ClusterMath.startConf = startConf;
         ClusterMath.vertices = blablaVertices;
         ClusterMath.indexes = indexes;
+        optCache.clear();
     }
 
     public static Conformation calcWithStartConf(String stronginBits, boolean isLocalOpt) {
@@ -53,6 +54,10 @@ public class ClusterMath {
     }
 
     private static String getFullBits(String stronginBits) {
+        if (stronginBits == null) {
+            return startConf;
+        }
+
         if (indexes.size() != stronginBits.length()) {
             throw new IllegalArgumentException("Invalid bits size");
         }

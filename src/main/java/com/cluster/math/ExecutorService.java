@@ -54,8 +54,15 @@ public class ExecutorService {
         if (Configuration.get() == null) {
             throw new RuntimeException("ExecutorService#init function is not be called");
         }
-
+        Map<String, Conformation> output = new HashMap<>();
         long time = System.currentTimeMillis();
+        if (Configuration.get().getM() - Configuration.get().getSTRONGIN_M() == Configuration.get().getN()) {
+            progressCallBack.onFinish(10);
+            output.put(Configuration.get().getSTART_CONF(), ClusterMath.calcWithStartConf(null, true));
+            ExecutorService.log.close();
+            finishCallback.onFinish(saveResults(output, progressCallBack), System.currentTimeMillis() - time);
+            return;
+        }
         //interval
         StringBuilder stronginOnes = new StringBuilder();
         for (int i = 0; i < Configuration.get().getSTRONGIN_N(); i++) {
@@ -84,7 +91,7 @@ public class ExecutorService {
             tasks.add(task);
             executor.execute(task);
         }
-        Map<String, Conformation> output = new HashMap<>();
+
         for (StronginTask task : tasks) {
             Strongin strongin = task.get();
             String key;
