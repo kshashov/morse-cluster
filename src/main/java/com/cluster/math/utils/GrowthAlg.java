@@ -62,7 +62,7 @@ public class GrowthAlg {
         StringBuilder sb = new StringBuilder(startBits);
         for (int i = 0; i < startBits.length(); i++) {
             if (startBits.charAt(i) == '0') {
-                int temp = ClusterMath.calcAdjacentNunberWithStartConf(startBits, i);
+                int temp = ClusterMath.calcAdjacentNumberWithStartConf(startBits, i);
                 if (temp > adjacentMax) {
                     adjacentMax = temp;
                     adjacentList.clear();
