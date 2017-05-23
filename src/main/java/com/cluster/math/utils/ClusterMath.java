@@ -33,6 +33,33 @@ public class ClusterMath {
         return calcE(fullBits, isLocalOpt);
     }
 
+    public static double calcEnergyAtomWithStartConf(String stronginBits, int atomIndex) {
+        if (atomIndex >= stronginBits.length()) {
+            throw new IllegalArgumentException("Invalid bits size");
+        }
+
+        String fullBits = getFullBits(stronginBits);
+        Vertex vertex = vertices.get(indexes.get(atomIndex));
+
+        ArrayList<Vertex> verticesConf = new ArrayList<>();
+        for (int i = 0; i < fullBits.length(); i++) {
+            if (fullBits.charAt(i) == '1') {
+                verticesConf.add(new Vertex(vertices.get(i)));
+            }
+        }
+
+        double r;
+        double energy = 0;
+        for (int i = 0; i < verticesConf.size(); i++) {
+            if (i != indexes.get(atomIndex)) {
+                r = verticesConf.get(i).distanceTo(vertex);
+                energy += Math.exp(Configuration.get().getRO() * (1 - r)) * (Math.exp(Configuration.get().getRO() * (1 - r)) - 2);
+            }
+        }
+
+        return energy;
+    }
+
     public static int calcAdjacentNumberWithStartConf(String stronginBits, int atomIndex) {
         if (atomIndex >= stronginBits.length()) {
             throw new IllegalArgumentException("Invalid bits size");

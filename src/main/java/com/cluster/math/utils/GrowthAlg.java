@@ -57,7 +57,7 @@ public class GrowthAlg {
     public static ArrayList<String> findBestAdjacentAtom(String startBits) {
         ArrayList<String> list = new ArrayList<>();
 
-        ArrayList<String> adjacentList = new ArrayList<>();
+        Map<String, Integer> adjacentList = new HashMap<>();
         int adjacentMax = 0;
         StringBuilder sb = new StringBuilder(startBits);
         for (int i = 0; i < startBits.length(); i++) {
@@ -69,25 +69,25 @@ public class GrowthAlg {
                 }
                 if (temp == adjacentMax) {
                     sb.setCharAt(i, '1');
-                    adjacentList.add(sb.toString());
+                    adjacentList.put(sb.toString(), i);
                     sb.setCharAt(i, '0');
                 }
             }
         }
 
-        Map<String, Conformation> conformations = new HashMap<>();
-        Conformation conf;
+        Map<String, Double> conformations = new HashMap<>();
+        double conf;
         double minEnergy = 0;
-        for (String bits : adjacentList) {
-            conf = ClusterMath.calcWithStartConf(bits, false);
-            if (conf.getEnergy() < minEnergy) {
-                minEnergy = conf.getEnergy();
+        for (Map.Entry<String, Integer> bits : adjacentList.entrySet()) {
+            conf = ClusterMath.calcEnergyAtomWithStartConf(startBits, bits.getValue());
+            if (conf < minEnergy) {
+                minEnergy = conf;
             }
-            conformations.put(bits, conf);
+            conformations.put(bits.getKey(), conf);
         }
 
-        for (Map.Entry<String, Conformation> entry : conformations.entrySet()) {
-            if (((Math.abs(entry.getValue().getEnergy() - minEnergy)) / minEnergy) < Configuration.get().getTOP_MAX_ENERGY_DELTA()) {
+        for (Map.Entry<String, Double> entry : conformations.entrySet()) {
+            if (((Math.abs(entry.getValue() - minEnergy)) / minEnergy) < Configuration.get().getTOP_MAX_ENERGY_DELTA()) {
                 list.add(entry.getKey());
             }
         }
