@@ -18,9 +18,9 @@ public class ClusterMath {
     private static ArrayList<Vertex> vertices;
     private static Map<String, Conformation> optCache = new HashMap<>();
 
-    public static void init(String startConf, ArrayList<Vertex> blablaVertices, ArrayList<Integer> indexes) {
+    public static void init(String startConf, ArrayList<Vertex> vertices, ArrayList<Integer> indexes) {
         ClusterMath.startConf = startConf;
-        ClusterMath.vertices = blablaVertices;
+        ClusterMath.vertices = vertices;
         ClusterMath.indexes = indexes;
         optCache.clear();
     }
