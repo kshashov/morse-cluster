@@ -1,11 +1,11 @@
 package com.cluster.math;
 
 import com.cluster.Configuration;
-import com.cluster.StronginTask;
 import com.cluster.math.model.Bits;
 import com.cluster.math.model.Interval;
 import com.cluster.math.utils.ClusterMath;
 import com.cluster.math.utils.Efficiency;
+import com.cluster.math.utils.StronginTask;
 import org.nevec.rjm.BigDecimalMath;
 
 import java.math.BigDecimal;

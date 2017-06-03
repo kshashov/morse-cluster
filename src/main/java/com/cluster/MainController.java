@@ -4,6 +4,7 @@ import com.cluster.gui.TableUtils;
 import com.cluster.math.ExecutorService;
 import com.cluster.math.model.Conformation;
 import com.cluster.math.model.Vertex;
+import com.cluster.math.utils.StronginTask;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.value.ChangeListener;

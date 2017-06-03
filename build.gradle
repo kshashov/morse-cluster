@@ -1,5 +1,5 @@
 group 'shashov.com'
-version '1.0-SNAPSHOT'
+version '0.93'
 
 buildscript {
     dependencies {
@@ -45,7 +45,7 @@ jfx {
     jfxAppOutputDir = "build/jfx/MorseClusterSolver"
     nativeOutputDir = "build/jfx/native"
     jfxMainAppJarName = "MorseClusterSolver.jar"
-    nativeReleaseVersion = "0.92"
+    nativeReleaseVersion = "0.93"
     vendor = 'envoy93'
     appName = "MorseClusterSolver"
 }

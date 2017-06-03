@@ -1,4 +1,4 @@
-package com.cluster;
+package com.cluster.math.utils;
 
 import com.cluster.math.Strongin;
 
