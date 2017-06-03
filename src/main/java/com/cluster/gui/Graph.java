@@ -1,8 +1,8 @@
-package com.cluster; /**
+package com.cluster.gui; /**
  * Created by envoy on 07.03.2017.
  */
 
-import com.cluster.math.model.Vertex;
+import com.shashov.cluster.math.model.Vertex;
 import org.jzy3d.analysis.AbstractAnalysis;
 import org.jzy3d.chart.factories.AWTChartComponentFactory;
 import org.jzy3d.colors.Color;
@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Graph extends AbstractAnalysis {
-    ArrayList<Vertex> vertices;
+    List<Vertex> vertices;
 
-    public Graph(ArrayList<Vertex> vertices) {
+    public Graph(List<Vertex> vertices) {
         this.vertices = vertices;
     }
 

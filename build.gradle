@@ -1,5 +1,5 @@
 group 'shashov.com'
-version '0.93'
+version '0.98'
 
 buildscript {
     dependencies {
@@ -18,9 +18,6 @@ apply plugin: 'java'
         compileJava,
         compileTestJava
 ]*.options*.encoding = 'UTF-8'
-
-//compileJava.options.fork = true
-//compileJava.options.forkOptions.executable = 'C:/Program Files (x86)/Java/jdk1.8.0_131/bin/javac'
 
 repositories {
     mavenLocal()
@@ -63,14 +60,14 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
-    compile 'com.github.keedio:bigdecimal-math:-SNAPSHOT'
-
-    compile group: 'com.github.vinhkhuc', name: 'lbfgs4j', version: '0.2.1'
-
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
-
     compile "org.jogamp.gluegen:gluegen-rt:2.3.1"
     compile "org.jogamp.jogl:jogl-all:2.3.1"
+    compile group: 'log4j', name: 'log4j', version: '1.2.16'
+
+    compile ('com.github.envoy93:morse-cluster-core:0.97e1') {
+        transitive = true
+    }
 
     runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-android-aarch64"
     runtime "org.jogamp.gluegen:gluegen-rt:2.3.1:natives-android-armv6"
@@ -95,8 +92,6 @@ dependencies {
     runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-solaris-i586"
     runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-windows-amd64"
     runtime "org.jogamp.jogl:jogl-all:2.3.1:natives-windows-i586"
-
-    compile group: 'log4j', name: 'log4j', version: '1.2.16'
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
 

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane minHeight="100.0" minWidth="600.0" prefHeight="500.0" prefWidth="700.0"
             xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.cluster.MainController">
+            fx:controller="com.cluster.gui.MainController">
     <top>
         <VBox BorderPane.alignment="CENTER">
             <children>
